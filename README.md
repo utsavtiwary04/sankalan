@@ -3,6 +3,8 @@
 Collection of ready-to-use modules (with explanation) for addressing commonly occurring business use cases. See README for more.
 
 </br>
+
+
 #### 👥 **Intended Audience**
 ------------
 Entrepreneurs, indie-hackers, builders or programming enthusiasts who are looking for more than just a boilerplate and want some level of customization to their website without the frills and fat.
