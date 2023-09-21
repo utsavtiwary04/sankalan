@@ -19,9 +19,8 @@ The level of complexity is kept at a bare minimum to make sure your product "wor
 
 ## ⚙️ Modules
 
-1. [Auth](http://google.com "Auth")
-2. Search and Discovery of Catalogue
-3. Mini CRM
-4. Coupons
-5. Payments and Orders
-6. Vendor Payouts
+1. [Auth](https://github.com/utsavtiwary04/sankalan/tree/main/Auth)
+2. [Payments ](https://github.com/utsavtiwary04/sankalan/tree/main/Payments "Payments ")
+3. [Roster](https://github.com/utsavtiwary04/sankalan/tree/main/Roster)
+4. [Search and Discovery](https://github.com/utsavtiwary04/sankalan/tree/main/Search)
+5. TBD
