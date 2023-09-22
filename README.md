@@ -26,3 +26,9 @@ The level of complexity is kept at a bare minimum to make sure your product "wor
 3. [Roster](https://github.com/utsavtiwary04/sankalan/tree/main/Roster)
 4. [Search and Discovery](https://github.com/utsavtiwary04/sankalan/tree/main/Search)
 5. TBD
+
+</br>
+## ⚙️ Resources
+
+1. [Master DB Diagram](https://dbdiagram.io/d/SANKALAN-650d14d8ffbf5169f047b10e "Master DB Diagram")
+
