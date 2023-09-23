@@ -49,12 +49,12 @@ class Courses(BaseModelMixin):
                                     null=True, 
                                     blank=True
                                 )
-    category            = models.CharField(
+    category            = ArrayField(models.CharField(
                                     max_length=64,
-                                    choices=CouponProductCategory.choices,
+                                    #choices=CouponProductCategory.choices,
                                     default=None,
                                     null=True, blank=True
-                                )
+                                ),default=list,blank=False,null=False)
 
     code                = models.CharField(
                                     max_length=64, 
@@ -73,3 +73,9 @@ class Courses(BaseModelMixin):
     class Meta:
         verbose_name    = "courses"
         db_table        = "courses"
+
+class Categories(BaseModelMixin):
+    id   = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=64, null=False, blank=False)
+
+
