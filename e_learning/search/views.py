@@ -1,20 +1,27 @@
 from django.shortcuts import render
-
-API
-
-search + filter + sort + paginate
-----------------------------------
-/v1/courses/search?term=baking&filter=&sort=&min_price=899&max_price=1999&limit=10&offset=100
+from django.http import HttpResponse
 
 
-categories with count
----------------------
-v1/courses/categories/<category_name>
+def index(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
+
+# API
+
+# search + filter + sort + paginate
+# ----------------------------------
+# /v1/courses/search?term=baking&filter=&sort=&min_price=899&max_price=1999&limit=10&offset=100
 
 
-bestsellers
------------
-v1/courses/bestsellers
+# categories with count
+# ---------------------
+# v1/courses/categories/<category_name>
+
+
+# bestsellers
+# -----------
+# v1/courses/bestsellers
+
+
 
 
 
