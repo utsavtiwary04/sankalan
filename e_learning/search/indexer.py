@@ -12,10 +12,9 @@ it helps in visualizing how our index would eventually look like.
     "description" : "Le Cordon Bleu has a large variety of cookery courses available every summer. From classes of just a few hours to formally accredited 6/7 week courses, you should be able to find the cooking course that would suit you best. Our culinary courses are a wonderful way to learn more about the fundamental techniques in cuisine, pâtisserie or wine in entertaining and informal classes. Whether you are preparing for a professional cooking career or just wish to study over the summer for your own interest you should be able to find a summer programme for you.",
     "amount" : 5699,
     "currency" : "INR",
-    "status": "accepting_registrations"
+    "status": "accepting_registrations",
     "category" : ["baking", "recreational", "adults", "kids"],
     "seats_available" :  20,
-    "status": "accepting_registrations",
     "teacher"  :    {
         "full_name" : "Amisha Jain",
         "courses_taken": 12
@@ -24,7 +23,7 @@ it helps in visualizing how our index would eventually look like.
         "start_date": "24 August, 2021",
         "end_date": "29 August, 2021",
         "duration": "60 mins",
-        "sessions": 4
+        "sessions": 4,
         "session_start_timings": [1695571696, 1695571800, 1695572696, 1695573696]
     }
 }
