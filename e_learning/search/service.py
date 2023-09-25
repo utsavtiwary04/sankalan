@@ -1,5 +1,3 @@
-
-
 class Search:
 	def core_search(query_params: dict):
 		##
@@ -7,4 +5,7 @@ class Search:
 
 class Recommendations:
 	def bestseller_courses():
+		pass
+
+	def recommended_for_user():
 		pass

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.factories.models import BaseModelMixin
+from e_learning.factories.base_model import BaseModelMixin
 from django.contrib.postgres.fields import ArrayField
 
 import uuid
@@ -15,8 +15,8 @@ class CourseStatus(models.TextChoices):
     PAUSED_REGISTRATIONS    = 'paused_registrations'
     ENDED                   = 'ended'
 
-class Courses(BaseModelMixin):
-
+class Course(BaseModelMixin):
+	# https://stackoverflow.com/questions/3936182/using-a-uuid-as-a-primary-key-in-django-models-generic-relations-impact
     id                  = models.AutoField(primary_key=True)
     heading		        = models.CharField(max_length=64, null=False, blank=False)
     description         = models.TextField(max_length=2000, null=True, blank=True)     
@@ -49,20 +49,11 @@ class Courses(BaseModelMixin):
                                     null=True, 
                                     blank=True
                                 )
-    category            = ArrayField(models.CharField(
-                                    max_length=64,
-                                    #choices=CouponProductCategory.choices,
-                                    default=None,
-                                    null=True, blank=True
-                                ),default=list,blank=False,null=False)
-
-    code                = models.CharField(
-                                    max_length=64, 
-                                    null=True,
-                                    blank=True,
-                                    default=generate_coupon_code
-                                )
-
+    category            = ArrayField(models.IntegerField(null=True, blank=False, default=25),
+    								default=list,
+    								blank=False,
+    								null=False
+    							)
 
     def __str__(self):
         return str(self.id)
@@ -74,7 +65,7 @@ class Courses(BaseModelMixin):
         verbose_name    = "courses"
         db_table        = "courses"
 
-class Categories(BaseModelMixin):
+class Category(BaseModelMixin):
     id   = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, null=False, blank=False)
 
