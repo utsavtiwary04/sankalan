@@ -66,7 +66,12 @@ class Course(BaseModelMixin):
         db_table        = "courses"
 
 class Category(BaseModelMixin):
-    id   = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=64, null=False, blank=False)
+    id            = models.AutoField(primary_key=True)
+    name          = models.CharField(max_length=128, null=True, blank=True, unique=True)
+    description   = models.CharField(max_length=256, null=True, blank=True, unique=False)
+    display_text  = models.CharField(max_length=128, null=True, blank=True, unique=False)
+    icon          = models.CharField(max_length=256, null=True, blank=True)
 
-
+    class Meta:
+        verbose_name    = "categories"
+        db_table        = "categories"

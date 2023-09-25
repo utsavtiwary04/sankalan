@@ -4,7 +4,7 @@ import django
 django.setup()
 from faker import factory, Faker
 from search.models import *
-from model_bakery.recipe import Course
+from model_bakery.recipe import Recipe
 
 myfake = Faker()
 
