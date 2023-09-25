@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from e_learning.factories.base_model import BaseModelMixin
+from __common__.base_model import BaseModelMixin
 from django.contrib.postgres.fields import ArrayField
 
 import uuid

@@ -1,5 +1,15 @@
 from django.test import TestCase
 from faker import Faker
+from factory.django import DjangoModelFactory
+from model_bakery import baker
+from search.models import Course
+
+class UserFactory(DjangoModelFactory):
+    class Meta:
+        model = User
+
+    name = factory.Faker("first_name")
+
 
 # Create your tests here.
 
