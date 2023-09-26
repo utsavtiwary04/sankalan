@@ -2,7 +2,7 @@
 
 import django.contrib.postgres.fields
 from django.db import migrations, models
-import e_learning.factories.base_model
+import __common__.base_model
 
 
 class Migration(migrations.Migration):
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             managers=[
-                ("objects", e_learning.factories.base_model.BaseManager()),
+                ("objects", __common__.base_model.BaseManager()),
             ],
         ),
         migrations.CreateModel(
@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
                 "db_table": "courses",
             },
             managers=[
-                ("objects", e_learning.factories.base_model.BaseManager()),
+                ("objects", __common__.base_model.BaseManager()),
             ],
         ),
     ]
