@@ -18,3 +18,12 @@
 	- **Company led** :* Price drop for a short time, stopping sale of certain items due to disruption, correction in features of a product, a new product is added to a category*
 
 	- **User led** : *a product is sold out and is hence unavailable*
+
+
+
+Key Learnings :
+
+- Writing multiple search clients via inheritance
+- Config management
+- Building an asynchronous pipeline
+- ?

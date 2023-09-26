@@ -10,6 +10,8 @@ from structlog import get_logger
 from celery_manager import celery_app
 from config import Config
 
+from base_client import BaseSearchClient
+
 logger = get_logger()
 conf = Config()
 
@@ -21,6 +23,9 @@ ES_PASSWORD = conf.DATABASE["ES_PASSWORD"]
 AUTH_TOKEN  = conf.DATABASE.get("ES_AUTH_TOKEN")
 ENGINE      = 'courses'
 
+
+class ESClient(BaseSearchClient):
+	pass
 
 def add_id_to_doc(hit):
     try:
