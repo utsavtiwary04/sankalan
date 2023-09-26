@@ -38,6 +38,49 @@ class ESClient(BaseSearchClient):
                          error=str(e))
             return None
 
+    def build_query(self, query_params):
+
+        def is_key_present(obj, key):
+            return (key in obj) and (obj["key"] is not None) and (obj["key"]) 
+        ## This can be a design pattern in itself : Adapter or builder
+        es_query = {}
+
+        ## Extract Search Query
+        if is_key_present(query_params, "keyword"):
+            es_query = {
+                "query" : {
+                    "bool" : {
+                        "must" : [
+                            {
+                                "match": {
+                                    "heading": query_params["keyword"]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+
+
+        ## Extract sort param
+        if is_key_present(query_params, "sort_by"):
+            es_query["sort"] = {
+                query["sort_by"] : query["order"] if is_key_present(query_params, "order") else "desc"
+            }
+
+        ## Extract limit & offset
+        if is_key_present(query_params, "limit"):
+            es_query["size"] = query_params["limit"]
+
+        if is_key_present(query_params, "offset"):
+            es_query["from"] = query_params["offset"]
+
+
+
+
+
+
+
     def create_index(self, index, index_config=None):
         if index_config is None:
             index_config = {}
@@ -83,34 +126,6 @@ class ESClient(BaseSearchClient):
                          error=str(e),
                          index=str(index))
             return False
-
-
-    # @celery_app.task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 2})
-    # def create_or_update_document(index, doc_id=None, doc=None):
-    #     if doc is None:
-    #         doc = {}
-    #     try:
-    #         doc['updated_at'] = pytz.utc.localize(datetime.utcnow()).isoformat()
-    #         response = requests.post(
-    #             f"{self.URL}/{index}/_update/{doc_id}",
-    #             data=json.dumps({"doc": doc, "doc_as_upsert": True}),
-    #             headers={"Content-Type": "application/json"},
-    #             auth=HTTPBasicAuth(self.username, self.password))
-
-    #         if response.status_code > 201:
-    #             logger.error(f"Failed to update document {doc['doc_id']}",
-    #                          error=str(response.json()),
-    #                          index=index)
-    #             return None
-
-    #         return response.json()["_id"]
-
-    #     except Exception as e:
-    #         logger.error(f"Failed to update",
-    #                      index=str(index),
-    #                      doc_id=str(doc['doc_id']),
-    #                      error=str(e))
-    #         raise Exception(f"Failed to update {str(index)} {str(doc['doc_id'])}")
 
     def create_document(self, index, doc):
         try:
