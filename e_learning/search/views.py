@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
 
+from .service import search_catalogue
+
 class SearchRequest(serializers.Serializer):
     term   = serializers.CharField(max_length=200)
     filter = serializers.CharField(max_length=50)
@@ -25,9 +27,13 @@ def health(request):
 @parser_classes([JSONParser])
 def search(request, format=None):
     params = request.query_params.dict()
+    data   = search_catalogue(params)
 
-    return Response(status=200, data={'data': None, 'success': True})
+    return Response(status=200, data={'data': data, 'success': True})
 
+
+
+## TODO : Add Structlog ##
 
 # API
 

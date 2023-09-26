@@ -22,8 +22,11 @@
 
 
 Key Learnings :
-
+--------------
 - Writing multiple search clients via inheritance
 - Config management
 - Building an asynchronous pipeline
-- ?
+- ABC
+- ES
+- CELERY
+- DUMMY DATA (factory boy)

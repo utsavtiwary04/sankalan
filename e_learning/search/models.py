@@ -16,7 +16,7 @@ class CourseStatus(models.TextChoices):
     ENDED                   = 'ended'
 
 class Course(BaseModelMixin):
-	# https://stackoverflow.com/questions/3936182/using-a-uuid-as-a-primary-key-in-django-models-generic-relations-impact
+	# https://stackoverflow.com/questions/3936182/using-a-uuid-as-a-primary-key-in-django-models-generic-relations-impact TODO
     id                  = models.AutoField(primary_key=True)
     heading		        = models.CharField(max_length=64, null=False, blank=False)
     description         = models.TextField(max_length=2000, null=True, blank=True)     
