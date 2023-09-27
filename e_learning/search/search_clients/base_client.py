@@ -26,6 +26,10 @@ class BaseSearchClient(ABC):
     def delete_document(self, index, doc_id):
         pass
 
+    @staticmethod
+    def build_query_from_input(query_params):
+        pass
+
 def get_search_client(source="ES"):
     from .elasticsearch import ESClient
     # Circular import will be resolve if this selector method is put in a separate file. Low prio.

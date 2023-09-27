@@ -29,57 +29,14 @@ class ESClient(BaseSearchClient):
 
     def format_response(self, hit):
         try:
-            enhanced_doc = deepcopy(hit['_source'])
-            enhanced_doc['id'] = hit['_id']
-            return enhanced_doc
+            response_doc = deepcopy(hit['_source'])
+            response_doc['id'] = hit['_id']
+            return response_doc
 
         except Exception as e:
             logger.error(f"Failed to add id to doc.",
                          error=str(e))
             return None
-
-    def build_query(self, query_params):
-
-        def is_key_present(obj, key):
-            return (key in obj) and (obj["key"] is not None) and (obj["key"]) 
-        ## This can be a design pattern in itself : Adapter or builder
-        es_query = {}
-
-        ## Extract Search Query
-        if is_key_present(query_params, "keyword"):
-            es_query = {
-                "query" : {
-                    "bool" : {
-                        "must" : [
-                            {
-                                "match": {
-                                    "heading": query_params["keyword"]
-                                }
-                            }
-                        ]
-                    }
-                }
-            }
-
-
-        ## Extract sort param
-        if is_key_present(query_params, "sort_by"):
-            es_query["sort"] = {
-                query["sort_by"] : query["order"] if is_key_present(query_params, "order") else "desc"
-            }
-
-        ## Extract limit & offset
-        if is_key_present(query_params, "limit"):
-            es_query["size"] = query_params["limit"]
-
-        if is_key_present(query_params, "offset"):
-            es_query["from"] = query_params["offset"]
-
-
-
-
-
-
 
     def create_index(self, index, index_config=None):
         if index_config is None:
@@ -231,5 +188,74 @@ class ESClient(BaseSearchClient):
                          error=str(e))
             return False
 
+    def build_query_from_input(self, query_params):
+
+        def is_key_present(obj, key):
+            return (key in obj) and (obj[key] is not None) and (obj[key]) 
+        ## This can be a design pattern in itself : Adapter or builder
+        es_query = {}
+
+        ## Extract search query
+        if is_key_present(query_params, "keyword"):
+            es_query = {
+                "query" : {
+                    "bool" : {
+                        "must" : [
+                            {
+                                "match": {
+                                    "heading": query_params["keyword"]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+
+
+        filters = []
+        ## Extract filters
+        #### Price filter
+        if is_key_present(query_params, "amount__lte"):
+            filters.append({ "range": { "amount" : { "lte" : query_params["amount__lte"] }}})
+
+        if is_key_present(query_params, "amount__gte"):
+            filters.append({ "range": { "amount" : { "gte" : query_params["amount__gte"] }}})
+
+        #### Date filter
+        if is_key_present(query_params, "startdate__gte"):
+            filters.append({ "range": { "schedule.start_date" : { "gte" : query_params["startdate__gte"] }}})
+
+        if is_key_present(query_params, "enddate_lte"):
+            filters.append({ "range": { "schedule.end_date" : { "gte" : query_params["enddate_lte"] }}})
+
+        #### Session count filter
+        if is_key_present(query_params, "sessions__lte"):
+            filters.append({ "range": { "schedule.sessions" : { "gte" : query_params["sessions__lte"] }}})
+
+        if is_key_present(query_params, "sessions__gte"):
+            filters.append({ "range": { "schedule.sessions" : { "gte" : query_params["sessions__gte"] }}})
+
+        if len(filters) > 0:
+            es_query["query"] = {
+                "bool" : {
+                    "filter" : filters
+                }
+            }
+
+
+        ## Extract sort param
+        if is_key_present(query_params, "sort_by"):
+            es_query["sort"] = {
+                query["sort_by"] : query["order"] if is_key_present(query_params, "order") else "desc"
+            }
+
+        ## Extract limit & offset
+        if is_key_present(query_params, "limit"):
+            es_query["size"] = query_params["limit"]
+
+        if is_key_present(query_params, "offset"):
+            es_query["from"] = query_params["offset"]
+
+        return es_query
 
 
