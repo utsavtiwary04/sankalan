@@ -20,6 +20,11 @@
 	- **User led** : *a product is sold out and is hence unavailable*
 
 
+## Troubleshooting and pre-requisites
+
+https://opster.com/guides/elasticsearch/security/elasticsearch-disable-ssl-securing-cluster-without-ssl-tls/
+
+
 
 Key Learnings :
 --------------

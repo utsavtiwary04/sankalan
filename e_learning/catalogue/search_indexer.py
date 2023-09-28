@@ -1,6 +1,3 @@
-from models import Course
-from jsonschema import validate, SchemaError
-
 """@@@
 Here is a sample document that we want to index, search and return. 
 It is a good idea to construct an example with real data before beginning to code as 
@@ -29,22 +26,18 @@ it helps in visualizing how our index would eventually look like.
 }
 @@@"""
 
+
 SEARCH_DOCUMENT_SCHEMA = {
     "type" : "object",
     "properties" :  {
-        "course_id" :         { "type" : "string" },
+        "course_id" :         { "type" : "number" },
         "heading" :           { "type" : "string" },
-        "description" :       { "type" : "string" }
+        "description" :       { "type" : "string" },
         "amount" :            { "type" : "number" },
         "currency" :          { "type" : "string" },
         "seats_available" :   { "type" : "number" },
-        "status":             { "type" : "string" }
-        "category" :    { 
-            "type" : "array",
-              "items": {
-                "type": "string"
-              }
-        },
+        "status":             { "type" : "string" },
+        "category" :          { "type" : "string" },
         "teacher"  :    {
             "type" : "object",
             "properties" : {
@@ -56,34 +49,55 @@ SEARCH_DOCUMENT_SCHEMA = {
             "type": "object",
             "properties": {
                 "start_date": { "type" : "string" },
-                "end_date": { "type" : "string" },
-                "duration": { "type" : "string" },
-                "sessions": { "type" : "number" },
-                "session_start_timings": {
-                    "type": "array",
-                    "items": {
-                        { "type" : "number" }
-                    }
-                }
+                "end_date": { "type"   : "string" },
+                "duration": { "type"   : "number" },
+                "sessions": { "type"   : "number" }
             }
         }
     }
 }
 
 
-def build_searchable_document(course_id: int):
+def generate_searchable_document(course):
+    from .models import Course, Category
+    from .service import get_registrations, get_teacher
+    from .search_clients import get_search_client
+    from jsonschema import validate, SchemaError
 
     try:
+        teacher  = get_teacher(course.id)
+        document =  {
+            "course_id"         : course.id,
+            "heading"           : course.heading,
+            "description"       : course.description,
+            "amount"            : float(course.amount),
+            "currency"          : course.currency,
+            "status"            : course.status,
+            "category"          : course.category.display_text,
+            "seats_available"   : course.max_seats - get_registrations(course.id),
+            "teacher": {
+                "full_name"     : teacher["full_name"],
+                "courses_taken" : 12 ##TODO remove hard code
+            },
+            "schedule": {
+                "start_date"    : course._start_date("%d-%m-%Y"),
+                "end_date"      : course._end_date("%d-%m-%Y"),
+                "duration"      : course.duration,
+                "sessions"      : course.sessions
+            }
+        }
         validate(document, schema=SEARCH_DOCUMENT_SCHEMA)
+
+        return document
+
     except SchemaError as e:
         e.add_note("Document not compatible with the existing schema")
         raise
-    ##
 
 
-def rebuild_index():
-    pass
-    ##
+    
 
-def index_course(course_id: int):
-    pass
+
+
+
+

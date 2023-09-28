@@ -22,11 +22,11 @@
 import os
 import subprocess
 
-
+os.system("")
 os.system("rm -rf db.sqlite3")
 os.system("rm -rf migrations/")
 os.system("python manage.py makemigrations")
 os.system("python manage.py migrate")
 os.system("python manage.py createsuperuser")
 
-subprocess.Popen
+# subprocess.Popen

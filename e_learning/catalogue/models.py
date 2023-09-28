@@ -20,10 +20,11 @@ class CourseStatus(models.TextChoices):
 
 class Course(BaseModelMixin):
 
-    DEFAULT_SESSION_COUNT    = 10
-    DEFAULT_SESSION_DURATION = 90
-    DEFAULT_MAX_SEATS        = 25
-    DEFAULT_AMOUNT           = 99.0
+    DEFAULT_SESSION_COUNT       = 10
+    DEFAULT_SESSION_DURATION    = 90
+    DEFAULT_MAX_SEATS           = 25
+    DEFAULT_AMOUNT              = 99.0
+    DEFAULT_HUMAN_READABLE_DATE = "%a, %-d %b %Y"
 
     # https://stackoverflow.com/questions/3936182/using-a-uuid-as-a-primary-key-in-django-models-generic-relations-impact TODO
     id                  = models.AutoField(primary_key=True)
@@ -62,10 +63,25 @@ class Course(BaseModelMixin):
         db_table        = "courses"
 
     def __str__(self):
-        return str(self.id)
+        return f"""
+            {self.id}. {self.heading} ({self.currency} {self.amount} | 
+            {self.max_seats} seats | 
+            {self.start_date.strftime("%a, %-d %b %Y")} to {self.end_date.strftime("%a, %-d %b %Y")})
+            """
 
-    def __json__(self):
-        return json.loads(serializers.serialize("json", [self]))[0]
+    def to_json(self):
+        json_object = json.loads(serializers.serialize("json", [self]))[0]
+
+        return { 
+            **{ "id" : json_object.pop("pk") },
+            **dict(json_object["fields"]) 
+        }
+
+    def _start_date(self, date_format=DEFAULT_HUMAN_READABLE_DATE):
+        return self.start_date.strftime(date_format)
+
+    def _end_date(self, date_format=DEFAULT_HUMAN_READABLE_DATE):
+        return self.start_date.strftime(date_format)
 
     def soft_delete(self):
         self.deleted_at = datetime.datetime.now()
@@ -83,9 +99,9 @@ class Category(BaseModelMixin):
         db_table        = "categories"
 
     def __str__(self):
-        return str(self.id)
+        return f"{self.id}. {self.name}"
 
-    def __json__(self):
+    def to_json(self):
         return json.loads(serializers.serialize("json", [self]))[0]
 
     def soft_delete(self):

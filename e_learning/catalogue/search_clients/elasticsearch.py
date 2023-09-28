@@ -15,7 +15,7 @@ logger = get_logger()
 # from config import Confige
 
 
-ES_URL      = "https://localhost:9200"
+ES_URL      = "http://localhost:9200"
 ES_USERNAME = "elastic"
 ES_PASSWORD = "pzYymOMRt=-pdvfwbj*d"
 
@@ -49,23 +49,20 @@ class ESClient(BaseSearchClient):
                 headers={"Content-Type": "application/json"},
                 auth=HTTPBasicAuth(self.username, self.password))
 
-            print(response.text)
             if response.status_code > 201:
                 logger.error(f"Failed to create index",
                              error=response.status_code,
                              index=index)
-                return False
-
-            return True
+                raise Exception(f"Failed to create index :: {str(index)}")
 
         except Exception as e:
             logger.error(f"Failed to create index", error=str(e), index=str(index))
-            return False
+            raise Exception(f"Failed to create index :: {str(index)}")
 
     def delete_index(self, index):
         try:
             response = requests.delete(
-                f"{self.URL}/{index}",
+                f"{self.URL}/{index}/?ignore_unavailable=true",
                 headers={"Content-Type": "application/json"},
                 auth=HTTPBasicAuth(self.username, self.password)
             )
@@ -74,20 +71,18 @@ class ESClient(BaseSearchClient):
                 logger.error(f"Failed to delete index",
                              error=response.status_code,
                              index=index)
-                return False
-
-            return True
+                raise Exception(f"Failed to delete index :: {str(index)}")
 
         except Exception as e:
             logger.error(f"Failed to delete index",
                          error=str(e),
                          index=str(index))
-            return False
+            raise Exception(f"Failed to delete index :: {str(index)}")
 
     def create_document(self, index, doc):
         try:
             response = requests.post(
-                f"{self.URL}/{index}/_doc/{doc['doc_id']}",
+                f"{self.URL}/{index}/_doc/",
                 data=json.dumps(doc),
                 headers={"Content-Type": "application/json"},
                 auth=HTTPBasicAuth(self.username, self.password)
@@ -95,21 +90,21 @@ class ESClient(BaseSearchClient):
 
             if response.status_code > 201:
                 logger.error(f"Failed to create document",
-                             doc_id=doc['doc_id'],
+                             doc_id=doc.get("_id"),
                              error=response.status_code,
                              error_message=response.text,
                              index=index)
-                return None
+                raise Exception(f"Failed to create new document in {str(index)}")
 
             return response.json()["_id"]
 
         except Exception as e:
-            logger.error(f"Failed to to create new index",
+            logger.error(f"Failed to to create new document",
                          index=str(index),
                          error=str(e),
                          doc=str(doc)
                          )
-            raise Exception(f"Failed to create new {str(index)}")
+            raise Exception(f"Failed to create new document in {str(index)}")
 
     def search_document(self, index, query):
         try:
@@ -126,7 +121,7 @@ class ESClient(BaseSearchClient):
                              error=response.status_code,
                              error_text=response.text,
                              index=index)
-                return [], 0, {}
+                raise Exception(f"Failed to search in index :: {str(index)} - {error_text}")
 
             return [self.format_response(hit) for hit in response.json()['hits']['hits']]
 
@@ -135,7 +130,7 @@ class ESClient(BaseSearchClient):
                          index=str(index),
                          query=str(query),
                          error=str(e))
-            raise Exception(f"Failed to search {str(index)} {str(query)} {str(e)}")
+            raise Exception(f"Failed to search in index :: {str(index)} - {str(e)}")
 
     def update_document(self, index, doc_id, doc):
         try:
@@ -151,8 +146,9 @@ class ESClient(BaseSearchClient):
                 logger.error(f"Failed to update document",
                              doc_id=str(doc_id),
                              error=response.status_code,
+                             error_message=response.text,
                              index=index)
-                return None
+                raise Exception(f"Failed to update document :: {str(index)} - {error_message}")
 
             return response.json()["_id"]
 
@@ -162,7 +158,7 @@ class ESClient(BaseSearchClient):
                          doc_id=str(doc_id),
                          doc=str(doc),
                          error=str(e))
-            raise Exception(f"Failed to update {str(index)} {str(doc_id)}")
+            raise Exception(f"Failed to update document :: {str(index)} - {error}")
 
     def delete_document(self, index, doc_id):
         try:
@@ -176,7 +172,7 @@ class ESClient(BaseSearchClient):
                 logger.error(f"Failed to delete document",
                              error=response.status_code,
                              index=index)
-                return False
+                raise Exception(f"Failed to delete document :: {str(index)} - {error_message}")
 
             return True
 
@@ -185,7 +181,7 @@ class ESClient(BaseSearchClient):
                          index=str(index),
                          doc_id=doc_id,
                          error=str(e))
-            return False
+            raise Exception(f"Failed to delete document :: {str(index)} - {error}")
 
     def build_query_from_input(self, query_params):
 
@@ -257,4 +253,6 @@ class ESClient(BaseSearchClient):
 
         return es_query
 
-
+    # def reindex_course(self, index, course_id, doc):
+    #     current_doc = self.search_document(index, { })
+    #     return self.update_document(index, current_doc["_id"], doc)
