@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "__common__",
-    "search"
+    "catalogue"
 ]
 
 MIDDLEWARE = [

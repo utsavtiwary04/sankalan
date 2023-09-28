@@ -128,8 +128,7 @@ class ESClient(BaseSearchClient):
                              index=index)
                 return [], 0, {}
 
-            return [self.format_response(hit) for hit in response.json()['hits']['hits']], response.json()['hits']['total'][
-                'value']
+            return [self.format_response(hit) for hit in response.json()['hits']['hits']]
 
         except Exception as e:
             logger.error(f"Failed to search",

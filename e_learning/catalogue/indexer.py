@@ -1,4 +1,4 @@
-from models import Courses
+from models import Course
 from jsonschema import validate, SchemaError
 
 """@@@

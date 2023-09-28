@@ -1,4 +1,4 @@
-## SEARCH
+## CATALOGUE (Search & more)
 
 ### Capabilities
 
