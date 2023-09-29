@@ -1,63 +1,42 @@
-## Catalogue
 
-### What does it do ?
+# Sankalan | संकलन | ಸಂಕಲನ 
+Collection of ready-to-use modules (with explanation) for addressing commonly occurring business use cases. See README for more.
 
-"X" is a platform for teachers to setup and sell their short online courses. 🛜 👩‍🏫 
-*Ex Learn the fundamentals of Python in 10 days*
 
-- A course has a fixed start and end date and runs as per the schedule. 
-- It has a title and a description for the students to understand the curriculum better.
-- A course is taught by a single teacher and has a price that the students have to pay for before registering.
-- The courses can be searched by students
+### 🚨 Why is it needed ?
 
-[TODO] Roadmap :
-- Students can access study materials uploaded and shared by the teachers
-- Students can be assessed via periodic assessments
-- Freemium access for students (start for free and pay to continue)
-- A frontend website to showcase the capabilities 🎉🎉
-- <add your request here ?>
+- Go from "idea" to a "functional product" faster
+- Collaborate and solve complex problems better
+- Share and learn with the wider community ⚡️⚡️
+
+
 
 </br>
-### Technical Capabilities
+### 👥 **Intended Audience**
+------------
+Early stage entrepreneurs, indie-hackers, builders or programming enthusiasts who are looking for more than just a boilerplate and want some level of customization in their product without the frills and fat.
 
-1. Ability to handle the following queries quickly and reliably:
-	- **Free text search** 
-	*Find me a course in "handicraft" *
-	- **Free text search + filters** 
-	*Find me a course in "baking" under INR 599 in October *
-	- **Free text search + filters + sorting**
-	*Find me a course in "baking" in October in decreasing order of price *
-	- **Free text search + filters + sorting + pagination**
-	*Find me 10 courses in "baking" under 500 in increasing order of total registrations so far*
-
-2. Keep updating information in the searchable catalogue (updating sold out inventory, price, correction in description etc)
-
-3. Register a student for a course and create access for the same
+*Example: You are trying to build a rewards system for your e-commerce website but either find it too intimidating to tackle all the use cases that you foresee OR get stuck in an endless loop of building "just enough" to keep it flexible for the future.*
 
 </br>
+### 📦 **Each module contains ..**
+------------
+- Explanation of the business problem being solved, 
+- database models,
+- working application code,
+- and graphical explanations.
 
-2. Being updated in real time as the catalogue is updated. The catalogue might need an update due to two main reasons:
-	- **Company led** :* Price drop for a short time, stopping sale of certain items due to disruption, correction in features of a product, a new product is added to a category*
+Written in Python, the code can be used in a plug-and-play manner with a few tweaks so that your time spent on the starting point is minimized and you can get your system up & running quickly.
 
-	- **User led** : *a product is sold out and is hence unavailable*
+The level of complexity is kept at a bare minimum to make sure your code "just works" and is "flexible" enough to accommodate growing complexities in the mid to long term.
 
-</br>
-### System diagram and data models
+</br></br>
 
-</br>
-### Troubleshooting
+### ⚙️ Modules
 
-https://opster.com/guides/elasticsearch/security/elasticsearch-disable-ssl-securing-cluster-without-ssl-tls/
-
-</br>
-### 💡Key learnings
-- Writing multiple search clients via inheritance
-- Config management
-- Building an asynchronous pipeline
-- ABC
-- ES
-- CELERY
-- DUMMY DATA (factory boy)
-
-</br>
-## 🔗 Resources for further learning
+1. [Auth](http://google.com "Auth")
+2. Catalogue
+3. Mini CRM
+4. Coupons
+5. Payments and Orders
+6. Vendor Payouts
