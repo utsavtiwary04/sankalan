@@ -1,6 +1,7 @@
 from .models import Course
 from .search_clients import get_search_client
 from .search_indexer import generate_searchable_document
+from celery import shared_task
 
 def search_catalogue(query_params: dict):
 
@@ -36,6 +37,7 @@ def get_courses_of_teacher(teacher_id: int):
 
     return [Course.objects.first()]
 
+@shared_task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 2})
 def rebuild_search_index():
     courses       = Course.objects.all()
     search_client = get_search_client("ES")
