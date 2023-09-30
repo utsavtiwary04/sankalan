@@ -1,6 +1,5 @@
 from .models import Course
-from .search_clients import get_search_client
-from .search_indexer import generate_searchable_document
+from .search import get_search_client, generate_searchable_document
 from celery import shared_task
 
 def search_catalogue(query_params: dict):

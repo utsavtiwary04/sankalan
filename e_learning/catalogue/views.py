@@ -20,7 +20,7 @@ class SearchRequest(serializers.Serializer):
 
 
 def health(request):
-    rebuild_search_index.delay()
+    rebuild_search_index()
     return HttpResponse("You know, for search")
 
 

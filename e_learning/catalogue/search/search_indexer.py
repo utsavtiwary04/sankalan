@@ -59,9 +59,9 @@ SEARCH_DOCUMENT_SCHEMA = {
 
 
 def generate_searchable_document(course):
-    from .models import Course, Category
-    from .service import get_registrations, get_teacher
-    from .search_clients import get_search_client
+    from catalogue.models import Course, Category
+    from catalogue.service import get_registrations, get_teacher
+    from catalogue.search.search_clients import get_search_client
     from jsonschema import validate, SchemaError
 
     try:
