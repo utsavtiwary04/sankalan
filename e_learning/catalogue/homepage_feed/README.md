@@ -3,7 +3,7 @@
 
 ### Prologue
 
-Interactive and vibrant homepages are a norm on most ecommerce. By vibrant we mean lots of icons and graphics of products and categories neatly (sometimes not so much !) stacked on the home screen. Almost like a supermarket facade or shelf. We want to build that and keep updating it dynamically from the backend without having to deploy our code again and again. 
+Interactive and vibrant homepages are a norm in most e-commerce websites. By vibrant we mean lots of icons and graphics of products and categories neatly (sometimes not so much !) stacked on the home screen. Almost like a supermarket facade or shelf. We want to build that and keep updating it dynamically from the backend without having to deploy our code again and again. 
 
 We are trying to create something that looks like this 👇🏻
 
@@ -13,7 +13,7 @@ We are trying to create something that looks like this 👇🏻
 </br>
 The same principle for building the above dynamic screen can be extended elsewhere.
 
-<img src="https://lh3.googleusercontent.com/d/1T73ovpdbhft7rygyOf_d43FmraR1z4O2" width="800" height="500" alt="hotstar_economist_app_home"/>
+<img src="https://lh3.googleusercontent.com/d/1T73ovpdbhft7rygyOf_d43FmraR1z4O2" width="650" height="500" alt="hotstar_economist_app_home"/>
 
 
 
