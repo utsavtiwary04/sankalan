@@ -13,7 +13,7 @@ We are trying to create something that looks like this 👇🏻
 </br>
 The same principle for building the above dynamic screen can be extended elsewhere.
 
-<img src="https://lh3.googleusercontent.com/d/1T73ovpdbhft7rygyOf_d43FmraR1z4O2" width="650" height="800" alt="hotstar_economist_app_home"/>
+<img src="https://lh3.googleusercontent.com/d/1T73ovpdbhft7rygyOf_d43FmraR1z4O2" width="650" height="600" alt="hotstar_economist_app_home"/>
 
 
 
