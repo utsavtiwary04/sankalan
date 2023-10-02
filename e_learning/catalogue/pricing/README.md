@@ -1,4 +1,4 @@
-## /Catalogue ==> Pricing
+## 🏷️ Catalogue => Pricing
 
 
 ### Prologue
@@ -11,26 +11,26 @@ We will explore some of the fundamental techniques and build the underlying syst
 
 On the elearning platform that we have built for teachers, we will extend the following capabilities for teachers to increase sales of the courses. 
 
-- "Early bird deals"
-- "Flash sales"
-- "Latecomer deal"
-- "Special pricing on all art courses - no coupon needed !!"
-- <add your request here ?>
+- 🦅 **Early bird deals**
+- ⚡️ **Flash sales**
+- ⏰ **Latecomer deal**
+- 💫 **Special pricing on all art courses - no coupon needed !!**
+- "add your request here ?"
 
 
 We can assume a scale of 1million registered users on the platform and 1000 courses (unique SKUs) on offer by 300 teachers. Some of our teachers constantly offer early bird deals and run flash sales. Additionally, we offer discounts on certain categories and courses from time to time.
 
 
-#### Mechanism for offering discount:
+##### Mechanisms for offering discount -
 - Coupons (link here)
-- No-coupons (login and get discounted rate directly upon checkout)
-- Promotional aallet credits
+- Direct discount without coupons (login and get discounted rate directly upon checkout)
+- Promotional credits/coins in wallet
 
-Both have their specific user-experience and benefits around tracking so we can't really put our finger and say - "well, we will only go with coupons because .."
+Both have their specific user-experience and benefits around tracking so we cannot really put our finger and say -"well, we will only go with coupons because .."
 
 Direct discounts are faster while coupons give you that "rewarding" feeling of having secured a sweet deal for yourself. We can add more arguments to each option but that's a debate for another day.
 
-####
+#### Workflow
 The whole workflow can be divided into the following steps :
 - Identifying the products to be given at a differential price (product list)
 - Segmenting user(s) who have to offered this product at this special price (user segment)
@@ -40,12 +40,16 @@ The whole workflow can be divided into the following steps :
 Often your communication channel would be an external tool like Mailchimp, Gupshup etc. You will need to hook up to those APIs accordingly (which we can tackle in a separate post)
 
 
-## Diagram
+### Diagram
 
+
+### Code Explanation
 
 
 ### Key Learnings
-
+- Implementing pricing strategies
+- Indexing prices of products
+- Segmenting users and products and creating a pricing matrix for fast lookup
 
 
 ### Useful links

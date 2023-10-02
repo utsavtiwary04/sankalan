@@ -50,3 +50,36 @@ class CourseFactory(factory.django.DjangoModelFactory):
 
 
 courses = CourseFactory.create_batch(10)
+
+
+
+
+
+######################## GPT Powered Dummy Data #######################
+
+"""
+Prompt:
+generate the details of 50 online courses in the domain of music, art or dance with the following fields and constraints with each of them
+1. heading in maximum 50 characters
+2. brief curriculum of the course in 200 characters
+3. price of the course ranging anywhere between 999 to 7999
+4. currency of the course which is always "INR"
+5. start date of the course which is any date from 1st Jan 2020 to 1st Jan 2026 and in the format "dd-mm-yyyy"
+6. end date of the course which is any date greater than start date with a maximum of 2 months from start date and in the format "dd-mm-yyyy"
+7. Total number of sessions ranging from 5 to 25 classes
+8. duration of the session should be between 45 to 90 mins in steps of 15 mins
+9. category which is one of the following "music", "art" or "dance" depending upon the heading
+10. teacher_id should be an integer from 1 to 10 with the same teacher_id for a category
+11. max_seats should be an integer between 5 and 50 in steps of 5
+
+The output should be a list of json with the following keys - "heading", "description", "price", "currency", "start_date", "end_date", "sessions", "duration", "category", Make sure the examples are realistic. Some of the courses'  start_date end_date should be ahead of 10th October, 2025.
+Some of the courses should be ongoing while some should have ended.
+"""
+
+"""
+Prompt:
+Generate 10 fake user data for testing consisting of name, age and gender as a list of json. The age should be between 25 and 45. The names should be a mix of indian or American names.
+"""
+
+""
+

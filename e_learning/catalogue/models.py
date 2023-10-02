@@ -17,7 +17,6 @@ class CourseStatus(models.TextChoices):
     PAUSED_REGISTRATIONS    = 'paused_registrations'
     ENDED                   = 'ended'
 
-
 class Course(BaseModelMixin):
 
     DEFAULT_SESSION_COUNT       = 10
@@ -86,6 +85,13 @@ class Course(BaseModelMixin):
     def soft_delete(self):
         self.deleted_at = datetime.datetime.now()
 
+    def has_ended(self):
+        return self.end_date >= datetime.datetime.today().astimezone()
+
+    def is_accepting_registrations(self):
+        return self.status == "ACCEPTING_REGISTRATIONS"
+
+
 
 class Category(BaseModelMixin):
     id            = models.AutoField(primary_key=True)
@@ -106,4 +112,5 @@ class Category(BaseModelMixin):
 
     def soft_delete(self):
         self.deleted_at = datetime.datetime.now()
+
 
