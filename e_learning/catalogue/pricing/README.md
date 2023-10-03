@@ -65,3 +65,7 @@ Often your communication channel would be an external tool like Mailchimp, Gupsh
 2. [Storing customer segments - Glovo](https://medium.com/glovo-engineering/customer-segmentation-at-glovo-8b46a787ac5e)
 
 3. [Lookup tables](https://medium.com/capital-one-tech/blazing-fast-data-lookup-in-a-microservices-world-dd3ae548ca45)
+
+### Further Learning
+
+1. [Postgres Arrays](https://news.ycombinator.com/item?id=4415754)
