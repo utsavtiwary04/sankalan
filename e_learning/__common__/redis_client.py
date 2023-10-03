@@ -1,1 +1,1 @@
-from django_redis import get_redis_connection as redis_client
+from django_redis import get_redis_connection as RedisC
