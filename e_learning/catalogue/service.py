@@ -51,7 +51,7 @@ def register_student(student_id, course_id):
         raise Exception(f"Course is not accepting registrations or is sold out")
 
     ## Is payment done successfully
-    if not Hub.OrderService.is_payment_successful(student_id, course_id)
+    if not Hub.OrderService.is_payment_successful(student_id, course_id):
         raise Exception(f"Payment not completed by {student_id} for {course_id}")
 
     ## create course pass

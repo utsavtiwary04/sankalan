@@ -18,7 +18,13 @@ On the elearning platform that we have built for teachers, we will extend the fo
 - "add your request here ?"
 
 
-We can assume a scale of 1million registered users on the platform and 1000 courses (unique SKUs) on offer by 300 teachers. Some of our teachers constantly offer early bird deals and run flash sales. Additionally, we offer discounts on certain categories and courses from time to time.
+We can assume a scale of 1million registered users on the platform and 3000 courses (unique SKUs) on offer by 300 teachers. Some of our teachers constantly offer early bird deals and run flash sales. Additionally, we offer discounts on certain categories and courses from time to time.
+
+To visualize a complex situation, consider the following diagram 👇🏻👇🏻
+<img src="https://lh3.googleusercontent.com/d/1FjUn_raztarQ-svOsof5iehg7WIH1hsu" width="800" height="400" alt="simultaneous_sale_on_user_product_segments"/>
+
+------------------------------------------------------------------------------------------
+</br>
 
 
 ##### Mechanisms for offering discount -

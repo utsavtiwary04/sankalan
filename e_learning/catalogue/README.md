@@ -45,6 +45,9 @@
 https://opster.com/guides/elasticsearch/security/elasticsearch-disable-ssl-securing-cluster-without-ssl-tls/
 
 
+For generating data :
+https://generatedata.com/generator
+
 ## Practical aspects to consider
 
 - A course will not run according to schedule. Important to take teacher's inputs to confirm if the course has started on time and ended on time or not. Or take in other signals like checking if students attended the live class and a recording was generated
