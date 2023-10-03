@@ -51,7 +51,7 @@ class Course(BaseModelMixin):
                                     null        = False, 
                                     blank       = False
                                 )
-    category            = models.ForeignKey('Category', on_delete=models.SET_NULL, null=False, blank=False)
+    category            = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=False)
     start_date          = models.DateTimeField(blank=True, null=True)
     end_date            = models.DateTimeField(blank=True, null=True)
     sessions            = models.IntegerField(null=True, blank=False, default=DEFAULT_SESSION_COUNT)
