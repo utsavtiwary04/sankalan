@@ -12,7 +12,7 @@ Some of the examples include -
 6. ** ... and many more.**
 
 </br>
-###### 📝 [The entire list is here.](https://github.com/utsavtiwary04/sankalan/blob/83cd0eafd15eebb8ce339c920d61f5a4910b1b2c/README.md#%EF%B8%8F-moduleshttp:// "The entire list is here.")
+📝 [The entire list is here.](https://github.com/utsavtiwary04/sankalan/blob/83cd0eafd15eebb8ce339c920d61f5a4910b1b2c/README.md#%EF%B8%8F-moduleshttp:// "The entire list is here.")
 
 </br>
 #### 🚨 Why is it needed ?
