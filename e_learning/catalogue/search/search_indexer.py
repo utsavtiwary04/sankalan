@@ -76,7 +76,7 @@ def generate_searchable_document(course):
             "category"          : course.category.display_text,
             "seats_available"   : course.max_seats - get_registrations(course.id),
             "teacher": {
-                "full_name"     : teacher["full_name"],
+                "full_name"     : teacher["name"],
                 "courses_taken" : 12 ##TODO remove hard code
             },
             "schedule": {

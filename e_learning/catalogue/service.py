@@ -11,10 +11,6 @@ def search_catalogue(query_params: dict):
 
     return response
 
-def get_bestseller_courses():
-    # search_client = get_search_client("ES")
-    pass
-
 def get_recommended_courses():
     pass
 
@@ -46,18 +42,6 @@ def register_student(student_id, course_id):
 def deregister_student(student_id, course_id):
     pass
 
-@shared_task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 2})
-def rebuild_search_index():
-    courses       = Course.all()
-    search_client = get_search_client("ES")
-    search_client.delete_index("elearning-search")
-
-    for course in courses:
-        document = generate_searchable_document(course)
-        search_client.create_document("elearning-search", document)
-
-
-
 def pre_registration_checks(student, course):
 
     if not course.is_accepting_registrations():
@@ -68,14 +52,3 @@ def pre_registration_checks(student, course):
 
     if CourseRegistration.exists(course_id, student_id):
         raise Exception(f"{student.name}({student.id}) is already registered for {course_name}({course.id})")
-
-@shared_task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 2})
-def post_registration_tasks(student, course):
-    all_course_registrations = CourseRegistration.registrations_of_course()
-
-    if len(all_course_registrations) >= course.max_seats:
-        course.update_status(Course.PAUSED_REGISTRATIONS)
-        # AuditLog
-
-    # reindex_course(course)
-

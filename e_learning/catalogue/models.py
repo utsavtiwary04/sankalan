@@ -137,9 +137,9 @@ class CourseRegistration(BaseModelMixin):
     ## Commonly used queries as methods
     @staticmethod
     def registrations_of_course(course_id: int):
-        return Course.objects.filter(course_id=course_id).filter(deleted_at=None).all()
+        return CourseRegistration.objects.filter(course_id=course_id).filter(deleted_at=None).all()
 
     @staticmethod
     def registrations_of_student(student_id: int):
-        return Course.objects.filter(student_id=student_id).filter(deleted_at=None).all()
+        return CourseRegistration.objects.filter(student_id=student_id).filter(deleted_at=None).all()
 
