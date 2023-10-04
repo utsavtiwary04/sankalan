@@ -23,14 +23,12 @@ class Category(BaseModelMixin):
         verbose_name    = "categories"
         db_table        = "categories"
 
+    @staticmethod
+    def all():
+        return Category.objects.filter(deleted_at=None).all()
+
     def __str__(self):
         return f"{self.id}. {self.name}"
-
-    def to_json(self):
-        return json.loads(serializers.serialize("json", [self]))[0]
-
-    def soft_delete(self):
-        self.deleted_at = datetime.datetime.now()
 
 
 class Course(BaseModelMixin):

@@ -23,6 +23,9 @@ class BaseModelMixin(TimestampMixin):
     meta    = models.JSONField(default=dict, blank=True, null=True)
     objects = BaseManager()
 
+    class Meta:
+        abstract = True
+
     def to_json(self):
         json_object = json.loads(serializers.serialize("json", [self]))[0]
 
@@ -31,5 +34,5 @@ class BaseModelMixin(TimestampMixin):
             **dict(json_object["fields"])
         }
 
-    class Meta:
-        abstract = True
+    def soft_delete(self):
+        self.deleted_at = datetime.datetime.now()

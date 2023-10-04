@@ -8,7 +8,7 @@
     "end_date": "15-04-2023",
     "sessions": 12,
     "duration": 60,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 1,
     "max_seats": 20
   },
@@ -21,7 +21,7 @@
     "end_date": "10-07-2024",
     "sessions": 8,
     "duration": 75,
-    "category": 2,
+    "category_id": 2,
     "teacher_id": 2,
     "max_seats": 15
   },
@@ -34,7 +34,7 @@
     "end_date": "20-11-2023",
     "sessions": 15,
     "duration": 90,
-    "category": 3,
+    "category_id": 3,
     "teacher_id": 3,
     "max_seats": 25
   },
@@ -47,7 +47,7 @@
     "end_date": "10-05-2023",
     "sessions": 10,
     "duration": 75,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 4,
     "max_seats": 20
   },
@@ -60,7 +60,7 @@
     "end_date": "05-08-2022",
     "sessions": 8,
     "duration": 60,
-    "category": 2,
+    "category_id": 2,
     "teacher_id": 5,
     "max_seats": 10
   },
@@ -73,7 +73,7 @@
     "end_date": "15-03-2023",
     "sessions": 12,
     "duration": 60,
-    "category": 3,
+    "category_id": 3,
     "teacher_id": 6,
     "max_seats": 15
   },
@@ -86,7 +86,7 @@
     "end_date": "12-01-2025",
     "sessions": 18,
     "duration": 75,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 7,
     "max_seats": 20
   },
@@ -99,7 +99,7 @@
     "end_date": "20-05-2024",
     "sessions": 10,
     "duration": 90,
-    "category": 1,
+    "category_id": 1,
     "teacher_id": 8,
     "max_seats": 18
   },
@@ -112,7 +112,7 @@
     "end_date": "08-10-2023",
     "sessions": 10,
     "duration": 60,
-    "category": 3,
+    "category_id": 3,
     "teacher_id": 9,
     "max_seats": 12
   },
@@ -125,7 +125,7 @@
     "end_date": "18-04-2023",
     "sessions": 10,
     "duration": 75,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 10,
     "max_seats": 15
   },
@@ -138,7 +138,7 @@
     "end_date": "05-01-2026",
     "sessions": 10,
     "duration": 90,
-    "category": 2,
+    "category_id": 2,
     "teacher_id": 5,
     "max_seats": 10
   },
@@ -151,7 +151,7 @@
     "end_date": "10-11-2025",
     "sessions": 15,
     "duration": 75,
-    "category": 3,
+    "category_id": 3,
     "teacher_id": 6,
     "max_seats": 20
   },
@@ -164,7 +164,7 @@
     "end_date": "15-09-2024",
     "sessions": 12,
     "duration": 60,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 7,
     "max_seats": 15
   },
@@ -177,7 +177,7 @@
     "end_date": "20-03-2022",
     "sessions": 8,
     "duration": 60,
-    "category": 2,
+    "category_id": 2,
     "teacher_id": 8,
     "max_seats": 10
   },
@@ -190,7 +190,7 @@
     "end_date": "10-05-2023",
     "sessions": 10,
     "duration": 90,
-    "category": 3,
+    "category_id": 3,
     "teacher_id": 9,
     "max_seats": 15
   },
@@ -203,7 +203,7 @@
     "end_date": "05-08-2022",
     "sessions": 6,
     "duration": 60,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 10,
     "max_seats": 12
   },
@@ -216,7 +216,7 @@
     "end_date": "15-01-2026",
     "sessions": 8,
     "duration": 75,
-    "category": 2,
+    "category_id": 2,
     "teacher_id": 5,
     "max_seats": 10
   },
@@ -229,7 +229,7 @@
     "end_date": "20-11-2022",
     "sessions": 15,
     "duration": 90,
-    "category": 3,
+    "category_id": 3,
     "teacher_id": 6,
     "max_seats": 20
   },
@@ -242,7 +242,7 @@
     "end_date": "10-06-2025",
     "sessions": 12,
     "duration": 75,
-    "category": 4,
+    "category_id": 4,
     "teacher_id": 7,
     "max_seats": 15
   },
@@ -255,7 +255,7 @@
     "end_date": "15-02-2024",
     "sessions": 8,
     "duration": 60,
-    "category": 2,
+    "category_id": 2,
     "teacher_id": 8,
     "max_seats": 10
   }

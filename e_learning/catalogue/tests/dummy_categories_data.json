@@ -1,0 +1,26 @@
+[
+	{
+	  "name": "Baking",
+	  "description": "This is a lead category",
+	  "display_text": "Bake it to cake it",
+	  "icon": "https://static.vecteezy.com/system/resources/previews/008/442/058/original/birthday-cake-icon-symbol-template-logo-design-color-editable-free-vector.jpg"
+	},
+	{
+	  "name": "Art",
+	  "description": "everything art",
+	  "display_text": "Art",
+	  "icon": "https://static.thenounproject.com/png/4139825-200.png"
+	},
+ 	{
+	  "name": "Dance",
+	  "description": "dance",
+	  "display_text": "dance",
+	  "icon": "https://cdn-icons-png.flaticon.com/512/3349/3349375.png"
+	},
+ 	{
+	  "name": "Music",
+	  "description": "Tun tunak tun !",
+	  "display_text": "music",
+	  "icon": "https://static.vecteezy.com/system/resources/thumbnails/000/421/044/small/Multimedia__28117_29.jpg"
+	}
+]

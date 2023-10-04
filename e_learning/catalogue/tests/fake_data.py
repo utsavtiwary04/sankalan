@@ -2,54 +2,54 @@ import django
 django.setup()
 import random
 from itertools import cycle
-from model_bakery import baker
-from model_bakery.recipe import Recipe
+# from model_bakery import baker
+# from model_bakery.recipe import Recipe
 
-from search.models import Course, CourseStatus, Category
+# from search.models import Course, CourseStatus, Category
 
-category = Recipe(
-    Category,
-    name         = cycle(["Baking", "Art", "Fitness", "Gardening"]),
-    description  = "Another interesting category",
-    display_text = "Baking",
-    icon         = "https://images.unsplash.com/photo-1695095737430-78fD%3D&auto=format&fit=crop&w=2670&q=80"
-)
+# category = Recipe(
+#     Category,
+#     name         = cycle(["Baking", "Art", "Fitness", "Gardening"]),
+#     description  = "Another interesting category",
+#     display_text = "Baking",
+#     icon         = "https://images.unsplash.com/photo-1695095737430-78fD%3D&auto=format&fit=crop&w=2670&q=80"
+# )
 
-course = Recipe(
-    Course,
-    heading     = "Learn how to bake",
-    description = "This is a course that teaches you how to bake. Total 5 lessons only",
-    amount      = cycle([random.randint(999, 4999) for i in range(100)]),
-    currency    = cycle(["INR"]),
-    max_seats   = cycle([random.randint(5, 50) for i in range(20)]),
-    status      = cycle(CourseStatus.names),
-    discount_currency = cycle(["INR"])
-    # category=
-)
-
-
-
-##############################################################
-
-import factory
-import factory.fuzzy
-
-class CourseFactory(factory.django.DjangoModelFactory):
-
-    class Meta: 
-        model = Course
-
-    heading     = factory.Faker("name")
-    description = factory.Faker("sentence")
-    amount      = factory.fuzzy.FuzzyChoice(choices=[random.randint(999, 4999) for i in range(100)])
-    currency    = factory.fuzzy.FuzzyChoice(choices=["INR"])
-    max_seats   = factory.fuzzy.FuzzyChoice(choices=[random.randint(5, 50) for i in range(20)])
-    status      = factory.fuzzy.FuzzyChoice(choices=CourseStatus.names)
-    discount_currency = factory.fuzzy.FuzzyChoice(choices=["INR"])
-    category = None
+# course = Recipe(
+#     Course,
+#     heading     = "Learn how to bake",
+#     description = "This is a course that teaches you how to bake. Total 5 lessons only",
+#     amount      = cycle([random.randint(999, 4999) for i in range(100)]),
+#     currency    = cycle(["INR"]),
+#     max_seats   = cycle([random.randint(5, 50) for i in range(20)]),
+#     status      = cycle(CourseStatus.names),
+#     discount_currency = cycle(["INR"])
+#     # category=
+# )
 
 
-courses = CourseFactory.create_batch(10)
+
+# ##############################################################
+
+# import factory
+# import factory.fuzzy
+
+# class CourseFactory(factory.django.DjangoModelFactory):
+
+#     class Meta: 
+#         model = Course
+
+#     heading     = factory.Faker("name")
+#     description = factory.Faker("sentence")
+#     amount      = factory.fuzzy.FuzzyChoice(choices=[random.randint(999, 4999) for i in range(100)])
+#     currency    = factory.fuzzy.FuzzyChoice(choices=["INR"])
+#     max_seats   = factory.fuzzy.FuzzyChoice(choices=[random.randint(5, 50) for i in range(20)])
+#     status      = factory.fuzzy.FuzzyChoice(choices=CourseStatus.names)
+#     discount_currency = factory.fuzzy.FuzzyChoice(choices=["INR"])
+#     category = None
+
+
+# courses = CourseFactory.create_batch(10)
 
 
 
@@ -81,5 +81,32 @@ Prompt:
 Generate 10 fake user data for testing consisting of name, age and gender as a list of json. The age should be between 25 and 45. The names should be a mix of indian or American names.
 """
 
-""
+
+
+from catalogue.models import Course,Category
+from users.tests.fake_data import create_dummy_users
+import datetime
+
+
+
+def create_dummy_categories_courses():
+    fake_categories_list = []
+    fake_course_list     = []
+
+    with open('dummy_categories_data.json') as category_data_file:
+        fake_categories_list = json.load(category_data_file)
+
+    with open('dummy_course_data.json') as course_data_file:
+        fake_course_list = json.load(course_data_file)
+
+    for cat in fake_categories_list:
+        Category.objects.create(**cat)
+
+    for course in fake_course_list:
+        course["start_date"] = datetime.datetime.strptime(course["start_date"], "%d-%m-%Y").astimezone()
+        course["end_date"]   = datetime.datetime.strptime(course["end_date"], "%d-%m-%Y").astimezone()
+        Course.objects.create(**course)
+
+
+
 

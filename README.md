@@ -1,22 +1,22 @@
-# Sankalan | संकलन | ಸಂಕಲನ 
+# Sankalan | संकलन | ಸಂಕಲನ
 Collection of ready-to-use modules (with explanation) for addressing commonly occurring business use cases.
 
 Each module picks up an interestign problem statement from real world and presents a fully working MVP with explanations, learning resources and most importantly - **code**.
 </br>
-Some of the examples include -
-1. User authentication system with login & logout
-2. Coupons, offers and rewards for your ecommerce website
-3. Real-time search for your catalogue of goods
-4. Insurance claims processing for your customers
-5. CRM for managing the lifecycle of your leads
-6. ** ... and many more.**
+
+**✨ Some of the examples include -**
+1. 🔐 User authentication system with login & logout
+2. 🎁 Coupons, offers and rewards for your ecommerce website
+3. 🔎 Real-time search for your catalogue of goods
+4. 💼 Insurance claims processing for your customers
+5. 🔄 CRM for managing the lifecycle of your leads
+6. *... and many more ..*
+
+##### [➡️ <u>The entire list is here</u>](https://github.com/utsavtiwary04/sankalan/blob/83cd0eafd15eebb8ce339c920d61f5a4910b1b2c/README.md#%EF%B8%8F-moduleshttp:// "The entire list is here.")
 
 </br>
 
-#### [📝 The entire list is here.](https://github.com/utsavtiwary04/sankalan/blob/83cd0eafd15eebb8ce339c920d61f5a4910b1b2c/README.md#%EF%B8%8F-moduleshttp:// "The entire list is here.")
-
-</br>
-## 🚨 Why is it needed?
+### 🚨 Why is it needed?
 
 - Go from "idea" to a "functional product" faster
 - Collaborate and solve complex problems better
@@ -39,9 +39,9 @@ Early stage entrepreneurs, indie-hackers, builders or programming enthusiasts wh
 - working application code,
 - and graphical explanations.
 
-Written in Python, the code can be used in a plug-and-play manner with a few tweaks so that your time spent on the starting point is minimized and you can get your system up & running quickly.
+Written In Python, The Code Can Be Used In A "Plug-And-Play" Manner With A Few Tweaks So That Your Time Spent On The Starting Point Is Minimized And You Can Get Your System Up & Running Quickly.
 
-The level of complexity is kept at a bare minimum to make sure your code "just works" and is "flexible" enough to accommodate growing complexities in the mid to long term.
+The Level Of Complexity Is Kept At A Bare Minimum To Make Sure Your Code "Just Works" And Is "Flexible" Enough To Accommodate Growing Complexities In The Mid To Long Term.
 
 </br>
 
