@@ -11,6 +11,28 @@ class CourseStatus(models.TextChoices):
     PAUSED_REGISTRATIONS    = 'paused_registrations'
     ENDED                   = 'ended'
 
+
+class Category(BaseModelMixin):
+    id            = models.AutoField(primary_key=True)
+    name          = models.CharField(max_length=128, null=True, blank=True, unique=True)
+    description   = models.CharField(max_length=256, null=True, blank=True, unique=False)
+    display_text  = models.CharField(max_length=128, null=True, blank=True, unique=False)
+    icon          = models.CharField(max_length=256, null=True, blank=True)
+
+    class Meta:
+        verbose_name    = "categories"
+        db_table        = "categories"
+
+    def __str__(self):
+        return f"{self.id}. {self.name}"
+
+    def to_json(self):
+        return json.loads(serializers.serialize("json", [self]))[0]
+
+    def soft_delete(self):
+        self.deleted_at = datetime.datetime.now()
+
+
 class Course(BaseModelMixin):
 
     DEFAULT_SESSION_COUNT       = 10
@@ -23,7 +45,7 @@ class Course(BaseModelMixin):
     id                  = models.AutoField(primary_key=True)
     heading             = models.CharField(max_length=64, null=False, blank=False)
     description         = models.TextField(max_length=2000, null=True, blank=True)
-    # teacher_id            = models.CharField(max_length=64, null=False, blank=False)  #unique true
+    teacher             = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=False)
     amount              = models.DecimalField(
                                     decimal_places=2, 
                                     default=DEFAULT_AMOUNT, 
@@ -55,9 +77,24 @@ class Course(BaseModelMixin):
         verbose_name    = "courses"
         db_table        = "courses"
 
+    ## Commonly used queries as methods
+    @staticmethod
+    def active_course(course_id):
+        return Course.objects.filter(id=course_id).filter(deleted_at=None).first()
+
+    @staticmethod
+    def all_courses_of_teacher(teacher_id):
+        return Course.objects.filter(deleted_at=None).filter(teacher_id=teacher_id).all()
+
+    @staticmethod
+    def all():
+        return Course.objects.filter(deleted_at=None).all()
+
+
     def __str__(self):
         return f"""
-            {self.id}. {self.heading} ({self.currency} {self.amount} | 
+            {self.id}. {self.heading} by {self.teacher.full_name() if self.teacher else '-'} 
+            ({self.currency} {self.amount} | 
             {self.max_seats} seats | 
             {self.start_date.strftime("%a, %-d %b %Y")} to {self.end_date.strftime("%a, %-d %b %Y")})
             """
@@ -86,25 +123,23 @@ class Course(BaseModelMixin):
         return self.status == "ACCEPTING_REGISTRATIONS"
 
 
+class CourseRegistration(BaseModelMixin):
 
-class Category(BaseModelMixin):
-    id            = models.AutoField(primary_key=True)
-    name          = models.CharField(max_length=128, null=True, blank=True, unique=True)
-    description   = models.CharField(max_length=256, null=True, blank=True, unique=False)
-    display_text  = models.CharField(max_length=128, null=True, blank=True, unique=False)
-    icon          = models.CharField(max_length=256, null=True, blank=True)
+    student = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=False)
+    course  = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True, blank=False)
+    start   = models.DateTimeField(blank=True, null=True)
+    end     = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        verbose_name    = "categories"
-        db_table        = "categories"
+        verbose_name    = "course_registrations"
+        db_table        = "course_registrations"
 
-    def __str__(self):
-        return f"{self.id}. {self.name}"
+    ## Commonly used queries as methods
+    @staticmethod
+    def registrations_of_course(course_id: int):
+        return Course.objects.filter(course_id=course_id).filter(deleted_at=None).all()
 
-    def to_json(self):
-        return json.loads(serializers.serialize("json", [self]))[0]
-
-    def soft_delete(self):
-        self.deleted_at = datetime.datetime.now()
-
+    @staticmethod
+    def registrations_of_student(student_id: int):
+        return Course.objects.filter(student_id=student_id).filter(deleted_at=None).all()
 

@@ -5,7 +5,7 @@
 
 Interactive and vibrant homepages are a norm in most e-commerce websites. By vibrant we mean lots of icons and graphics of products and categories neatly (sometimes not so much !) stacked on the home screen. Almost like a supermarket facade or shelf. We want to build that and keep updating it dynamically from the backend without having to deploy our code again and again. 
 
-We are trying to create something that looks like this 👇🏻
+We are trying to create something that looks like this 👇🏻👇🏻
 
 
 <img src="https://lh3.googleusercontent.com/d/1MaxSvGc4vUTpsI5nJru6pcRAdTR7uyHk" width="400" height="500" alt="jiomart_app_home"/>

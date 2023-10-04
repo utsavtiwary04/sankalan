@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "__common__",
     "catalogue",
-    "auth"
+    "users"
 ]
 
 MIDDLEWARE = [

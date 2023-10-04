@@ -76,7 +76,8 @@ def update_master_price(campaign_id, csv_file_path: str):
     if not campaign:
         raise Exception(f"Invalid campaign ID or not found :: {campaign_id}")
 
-    products = campaign.get_products()
+    ## validate all products
+    
 
     if campaign.type == CampaignType.COUPON:
         ## Get coupon and calculate price of each good

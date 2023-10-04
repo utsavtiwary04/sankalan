@@ -21,5 +21,13 @@ class BaseModelMixin(TimestampMixin):
     meta    = models.JSONField(default=dict, blank=True, null=True)
     objects = BaseManager()
 
+    def to_json(self):
+        json_object = json.loads(serializers.serialize("json", [self]))[0]
+
+        return {
+            **{ "id" : json_object.pop("pk") },
+            **dict(json_object["fields"])
+        }
+
     class Meta:
         abstract = True
