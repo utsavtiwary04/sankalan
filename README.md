@@ -12,10 +12,11 @@ Some of the examples include -
 6. ** ... and many more.**
 
 </br>
-📝 [The entire list is here.](https://github.com/utsavtiwary04/sankalan/blob/83cd0eafd15eebb8ce339c920d61f5a4910b1b2c/README.md#%EF%B8%8F-moduleshttp:// "The entire list is here.")
+
+#### [📝 The entire list is here.](https://github.com/utsavtiwary04/sankalan/blob/83cd0eafd15eebb8ce339c920d61f5a4910b1b2c/README.md#%EF%B8%8F-moduleshttp:// "The entire list is here.")
 
 </br>
-#### 🚨 Why is it needed ?
+## 🚨 Why is it needed?
 
 - Go from "idea" to a "functional product" faster
 - Collaborate and solve complex problems better
@@ -24,13 +25,15 @@ Some of the examples include -
 Each problem statement is described and solved with fully functional code and explanations.
 
 </br>
-#### 👥 **Intended Audience**
+
+###  👥 **Intended Audience**
 Early stage entrepreneurs, indie-hackers, builders or programming enthusiasts who are looking for more than just a boilerplate and want some level of customization in their product without the frills and fat.
 
 *📒 **Example**: You are trying to build a rewards system for your e-commerce website but either find it too intimidating to tackle all the use cases that you foresee OR getting stuck in an endless loop of building "just a bit more" to keep it flexible for the future.*
 
 </br>
-#### 📦 **Each module contains ..**
+
+### 📦 **Each module contains ..**
 - Explanation of the business problem being solved, 
 - database models,
 - working application code,
@@ -42,7 +45,7 @@ The level of complexity is kept at a bare minimum to make sure your code "just w
 
 </br>
 
-#### ⚙️ List of modules
+### ⚙️ List of modules
 1. [Auth](http://google.com "Auth")
 2. Catalogue
 3. Mini CRM
