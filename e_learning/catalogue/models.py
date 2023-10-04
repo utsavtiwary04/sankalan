@@ -1,15 +1,9 @@
 from django.db import models
 from django.core import serializers
-from django.utils.translation import gettext_lazy as _
 from __common__.base_model import BaseModelMixin
-from django.contrib.postgres.fields import ArrayField
 
-import uuid
 import json
 import datetime
-
-def generate_course_code():
-    return f"CPN{str(uuid.uuid4())[:8]}"
 
 class CourseStatus(models.TextChoices):
     INACTIVE                = 'inactive'

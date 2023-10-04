@@ -9,9 +9,3 @@
 - A course is taught by a single teacher and has a price that the students have to pay for before registering.
 - The courses can be searched by students
 
-[TODO] Roadmap :
-- Students can access study materials uploaded and shared by the teachers
-- Students can be assessed via periodic assessments
-- Freemium access for students (start for free and pay to continue)
-- A frontend website to showcase the capabilities 🎉🎉
-- <add your request here ?>

@@ -1,54 +1,37 @@
-from .models import Campaign, PriceProfile
+from .models import Campaign, PriceProfile, CampaignType
 from django.core.cache import cache
-from __common__ import redis_client
+from __common__ import CSV, RedisC
 
-Campaign
-- name
-- description
-- created_by
-- type
-- start/end
-
-UserSegment
-- name
-- created_by
-- description
-- user_count
-
-ProductSegment
-- name
-- type (product_id, category_id)
-- entity_id
 
 
 Class BaseCampaign
 
 Class EarlyBird()
-	def get_user_segment()
-	def get_products()
-	def get_price(user_id, product_id)
-	def pause_campaign()
-	def restart_campaign()
-	def modify_user_segment()
-	def modify_product()
-	def is_active()
+    def get_user_segment()
+    def get_products()
+    def get_price(user_id, product_id)
+    def pause_campaign()
+    def restart_campaign()
+    def modify_user_segment()
+    def modify_product()
+    def is_active()
 
 Class FlashSale()
-	def get_user_segment()
-	def get_products()
-	def get_price(user_id, product_id)
-	def pause_campaign()
-	def restart_campaign()
-	def modify_user_segment()
-	def modify_product()
-	def is_active()
+    def get_user_segment()
+    def get_products()
+    def get_price(user_id, product_id)
+    def pause_campaign()
+    def restart_campaign()
+    def modify_user_segment()
+    def modify_product()
+    def is_active()
 
 
 
 Loookup : MasterPriceList (all campaigns)
-	- given a product_id and user_id, return price (base query)
-	- given a list of product_ids and user_id, return price (faster search)
-	- given a list of user_ids and a product, return price (for marketing campaigns)
+    - given a product_id and user_id, return price (base query)
+    - given a list of product_ids and user_id, return price (faster search)
+    - given a list of user_ids and a product, return price (for marketing campaigns)
 
 Let us do some calculations
 3000 products, 1mn users
@@ -69,25 +52,57 @@ INPUT 3 :
 
 
 def get_product_price(user_id, product_id):
-	pass
+    ## Check master list
+    RedisC().get("")
+
+    ## Fallback to DB default price
 
 def get_product_price_bulk(user_id, product_ids):
-	pass
+    pass
 
 def update_price(product_id, {}):
-	pass
+    pass
+
+def create_campaign():
+    pass
+
+def update_master_price(campaign_id, csv_file_path: str):
+    campaign = Campaign.objects.filter(id=campaign_id).filter(deleted_at=None).first()
+    products = None
+    users    = None
+    csv_data = CSV(csv_file_path).data()
+
+
+    if not campaign:
+        raise Exception(f"Invalid campaign ID or not found :: {campaign_id}")
+
+    products = campaign.get_products()
+
+    if campaign.type == CampaignType.COUPON:
+        ## Get coupon and calculate price of each good
+        ## update master list
+
+        pass
+
+    if campaign.type == CampaignType.DIRECT_DISCOUNT:
+
+
+    if campaign.can_update_price():
+        ## write to cache
+        pass
+
 
 
 ## Segments to ids (product & user) mapping
 def ingest_user_segment(segment_name: str, user_ids: list):
-	redis_client().set(f"USER_{segment_name}", *set(user_ids))
+    RedisC().set(f"USER_{segment_name}", *set(user_ids))
 
 def is_user_in_segment(segment_name: str, user_id: int):
-	return redis_client().sismember(f"USER_{segment_name}", user) == True
+    return RedisC().sismember(f"USER_{segment_name}", user) == True
 
 def ingest_product_segment(segment_name: str, user_ids: list):
-	redis_client().set(f"PRODUCT_{segment_name}", *set(user_ids))
+    RedisC().set(f"PRODUCT_{segment_name}", *set(user_ids))
 
 def is_product_in_segment(segment_name: str, product_id: int):
-	return redis_client().sismember(f"USER_{segment_name}", user) == True
+    return RedisC().sismember(f"USER_{segment_name}", user) == True
 

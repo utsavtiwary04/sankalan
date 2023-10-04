@@ -9,6 +9,9 @@ class CampaignStatus(models.TextChoices):
     INACTIVE = 'inactive'
     ACTIVE   = 'active'
 
+class CampaignType(models.TextChoices):
+    COUPON          = 'coupon'
+    DIRECT_DISCOUNT = 'direct_discount'
 
 class Campaign(BaseModelMixin):
     # duration = models.IntegerField(null=True, blank=False, default=DEFAULT_SESSION_DURATION)
@@ -34,6 +37,9 @@ class Campaign(BaseModelMixin):
 
     def is_active(self):
         return self.start_date <= datetime.datetime.now().astimezone() <= self.end_date
+
+    def can_update_price(self):
+        return self.deleted_at is None and self.is_active()
 
 
 

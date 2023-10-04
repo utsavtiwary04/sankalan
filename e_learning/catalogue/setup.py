@@ -17,8 +17,6 @@
 # - Re-indexes one document to check if celery + redis is working fine
 
 
-
-
 import os
 import subprocess
 

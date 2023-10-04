@@ -37,8 +37,9 @@ def get_courses_of_teacher(teacher_id: int):
     return [Course.objects.first()]
 
 def register_student(student_id, course_id):
+    ## wrap in a transaction
     ## Status of the course (Accepting registrations, not full, not ended)
-    course = Course.objects.filter(id=course_id, deleted_at=None).first()
+    course = Course.objects.filter(id=course_id).filter(deleted_at=None).first()
     if not course:
         raise Exception(f"Course does not exist :: {course_id}")
     
