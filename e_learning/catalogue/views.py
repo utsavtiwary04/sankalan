@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
 
-from .service import search_catalogue
+from .search.service import search_catalogue
 from .tasks import rebuild_search_index
 
 class SearchRequest(serializers.Serializer):

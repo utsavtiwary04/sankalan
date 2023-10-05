@@ -3,7 +3,7 @@
 
 ### Prologue
 
-Pricing is a complex and fascinating in online commerce - particularly at scale. Almost all of us are familiar with "flash sales", "exclusive coupons", "early bird deals", "bundle offers" and so on. Behind the scene each ecommerce platform has a incredibly complex (also operationally heavy) mechanism for setting just the right price to make sure the bottom-line targets are met.
+Pricing products is both complex fascinating in online commerce - particularly at scale. Almost all of us are familiar with "flash sales", "exclusive coupons", "early bird deals", "bundle offers" and so on. Behind the curtains, each e-commerce platform has a incredibly complex (also operationally heavy) mechanism for setting just the right price to make sure the bottom-line targets are met.
 
 We will explore some of the fundamental techniques and build the underlying system which is reasonably felxible and scalable and most importantly - fully functional.
 
@@ -44,6 +44,16 @@ The whole workflow can be divided into the following steps :
 - Allowing manual overrides to campaigns at any stage of the campaign
 
 Often your communication channel would be an external tool like Mailchimp, Gupshup etc. You will need to hook up to those APIs accordingly (which we can tackle in a separate post)
+
+Let us do some calculations
+3000 products, 1mn users
+we run 10 sales every month
+each user segment has on an average 10k users
+each product segment has 25 products
+
+Pricing matrix :
+Monthly data volume (worst case) =  10 sales x 10k users x 25 products = 2.5mn entries
+Yearly data volume (worst case) = 30mn entries
 
 
 ### Diagram
