@@ -93,11 +93,3 @@ def generate_searchable_document(course):
     except SchemaError as e:
         e.add_note("Document not compatible with the existing schema")
         raise
-
-
-    
-
-
-
-
-

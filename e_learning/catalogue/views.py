@@ -9,7 +9,7 @@ from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
 
 from .search.service import search_catalogue
-from .tasks import rebuild_search_index
+from .search.tasks import rebuild_search_index
 
 class SearchRequest(serializers.Serializer):
     term   = serializers.CharField(max_length=200)
@@ -21,7 +21,7 @@ class SearchRequest(serializers.Serializer):
 
 
 def health(request):
-    rebuild_search_index()
+    rebuild_search_index.delay()
     return HttpResponse("You know, for search (init full reindex...)")
 
 

@@ -1,9 +1,7 @@
 from .models import Course
 from __common__ import service_hub as Hub
-from celery import shared_task
+from .tasks import post_registration_tasks
 
-def get_recommended_courses():
-    pass
 
 def get_registrations(course_id: int):
     ## TODO : Finish this method referring to CourseRegistrations table
@@ -37,8 +35,8 @@ def pre_registration_checks(student, course):
     if not course.is_accepting_registrations():
         raise Exception(f"Course is not accepting registrations or is sold out")
 
-    if not Hub.is_payment_successful(student.id, course_id):
-        raise Exception(f"Payment not completed by {student.name}({student.id}) for {course.name}({student.id})")
+    # if not Hub.is_payment_successful(student.id, course_id):
+    #     raise Exception(f"Payment not completed by {student.name}({student.id}) for {course.name}({student.id})")
 
     if CourseRegistration.exists(course_id, student_id):
         raise Exception(f"{student.name}({student.id}) is already registered for {course_name}({course.id})")

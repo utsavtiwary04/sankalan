@@ -33,15 +33,6 @@ Loookup : MasterPriceList (all campaigns)
     - given a list of product_ids and user_id, return price (faster search)
     - given a list of user_ids and a product, return price (for marketing campaigns)
 
-Let us do some calculations
-3000 products, 1mn users
-we run 10 sales every month
-each user segment has on an average 10k users
-each product segment has 25 products
-
-Pricing matrix :
-Monthly data volume (worst case) =  10 sales x 10k users x 25 products = 2.5mn entries
-Yearly data volume (worst case) = 30mn entries
 
 
 INPUT 1 : flash_sale_1, COURSES: all_art_courses, users: [1,22,34,45,66,7 ... 78341], price = 2344
