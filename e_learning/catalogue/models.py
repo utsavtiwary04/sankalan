@@ -20,8 +20,9 @@ class Category(BaseModelMixin):
     icon          = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
-        verbose_name    = "categories"
-        db_table        = "categories"
+        verbose_name        = "categories"
+        verbose_name_plural = "categories"
+        db_table            = "categories"
 
     @staticmethod
     def all():
@@ -72,8 +73,9 @@ class Course(BaseModelMixin):
     duration            = models.IntegerField(null=True, blank=False, default=DEFAULT_SESSION_DURATION)
 
     class Meta:
-        verbose_name    = "courses"
-        db_table        = "courses"
+        verbose_name        = "courses"
+        verbose_name_plural = "courses"
+        db_table            = "courses"
 
     ## Commonly used queries as methods
     @staticmethod
@@ -129,8 +131,9 @@ class CourseRegistration(BaseModelMixin):
     end     = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        verbose_name    = "course_registrations"
-        db_table        = "course_registrations"
+        verbose_name        = "course_registrations"
+        verbose_name_plural = "course_registrations"
+        db_table            = "course_registrations"
 
     ## Commonly used queries as methods
     @staticmethod

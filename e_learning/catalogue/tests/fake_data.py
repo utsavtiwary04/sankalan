@@ -1,5 +1,3 @@
-import django
-django.setup()
 import random
 from itertools import cycle
 # from model_bakery import baker
@@ -86,18 +84,20 @@ Generate 10 fake user data for testing consisting of name, age and gender as a l
 from catalogue.models import Course,Category
 from users.tests.fake_data import create_dummy_users
 import datetime
-
+import json
+import os
 
 
 def create_dummy_categories_courses():
     fake_categories_list = []
     fake_course_list     = []
 
-    with open('dummy_categories_data.json') as category_data_file:
+    with open(os.path.join(os.getcwd(), 'catalogue/tests/dummy_categories_data.json')) as category_data_file:
         fake_categories_list = json.load(category_data_file)
 
-    with open('dummy_course_data.json') as course_data_file:
+    with open(os.path.join(os.getcwd(), 'catalogue/tests/dummy_course_data.json')) as course_data_file:
         fake_course_list = json.load(course_data_file)
+
 
     for cat in fake_categories_list:
         Category.objects.create(**cat)
