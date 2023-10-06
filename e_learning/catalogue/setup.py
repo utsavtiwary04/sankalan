@@ -21,10 +21,11 @@ import time
 import django
 django.setup()
 from catalogue.tests.fake_data import create_dummy_categories_courses
+from catalogue.search.models import Campaign, ProductSegment, UserSegment
 from catalogue.search.tasks import rebuild_search_index
 from users.tests.fake_data import create_dummy_users
 
-print("\n CLEANING DB & CREATING SUPER USER \n")
+print("\n 💿 CLEANING DB & CREATING SUPER USER \n")
 time.sleep(2.5)
 
 os.system("")
@@ -58,8 +59,15 @@ print("\n 🔎 BUILDING SEARCH INDEX \n")
 time.sleep(2)
 rebuild_search_index.delay()
 
+print("\n 🔑 STARTING SERVER !\n")
+os.system("python manage.py runserver")
+
 print("\n 🚀 WE ARE READY !\n")
 print("Click here - http://localhost:8000/catalogue/search/?keyword=music&limit=15 \n")
+
+
+
+
 
 ## 4. Register a student for a course successfully
 

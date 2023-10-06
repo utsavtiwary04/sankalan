@@ -7,9 +7,11 @@ def get_registrations(course_id: int):
     ## TODO : Finish this method referring to CourseRegistrations table
     return 12
 
-def get_teacher(course_id: int):
-    course = Course.active_course(course_id)
-    return Hub.get_user(course.teacher_id).to_json()
+def get_teacher(course_id: int, json=False):
+    course  = Course.active_course(course_id)
+    teacher = Hub.get_user(course.teacher_id)
+
+    return teacher.to_json() if json else teacher
 
 def register_student(student_id, course_id):
     course = Course.active_course(course_id)

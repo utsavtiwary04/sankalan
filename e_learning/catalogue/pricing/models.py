@@ -1,6 +1,8 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from __common__.base_model import BaseModelMixin
-from __common__ import redis_client
+from __common__.redis_client import RedisC
 
 import json
 import datetime
@@ -10,15 +12,14 @@ class CampaignStatus(models.TextChoices):
     ACTIVE   = 'active'
 
 class CampaignType(models.TextChoices):
-    COUPON          = 'coupon'
-    DIRECT_DISCOUNT = 'direct_discount'
+    COUPON = 'coupon'
+    DIRECT = 'direct'
 
 class Campaign(BaseModelMixin):
-    # duration = models.IntegerField(null=True, blank=False, default=DEFAULT_SESSION_DURATION)
     name        = models.CharField(max_length=64, null=False, blank=False)
     description = models.CharField(max_length=200, null=False, blank=False)
-    # created_by = models.ForeignKey('User', null=False, blank=False)
-    type        = models.CharField(max_length=64, null=False, blank=False)
+    created_by  = models.ForeignKey('users.User', null=True, blank=False, on_delete=models.SET_NULL)
+    type        = models.CharField(max_length=64, null=False, blank=False, default=CampaignType.DIRECT)
     start_date  = models.DateTimeField(blank=True, null=True)
     end_date    = models.DateTimeField(blank=True, null=True)
     status      = models.CharField(
@@ -31,54 +32,70 @@ class Campaign(BaseModelMixin):
     product_segment = models.ForeignKey('ProductSegment', null=True, blank=True, on_delete=models.SET_NULL)
     user_segment    = models.ForeignKey('UserSegment', null=True, blank=True, on_delete=models.SET_NULL)
 
+    def courses():
+        pass
+        ## return Course.objects.filter(ids__in=).all()
+
     def __str__(self):
-        return f"""Campaign {self.type} {self.name} :: {self.status}
-                   ({self.start_date.strftime("%a, %-d %b %Y") - self.end_date.strftime("%a, %-d %b %Y")})"""
+        return f"Campaign {self.type} {self.name} :: {self.status}"
 
-    def is_active(self):
-        return self.start_date <= datetime.datetime.now().astimezone() <= self.end_date
+    def has_ended(self):
+        if (self.start_date is not None) and (self.end_date is not None):
+            return not (self.start_date <= datetime.datetime.now().astimezone() <= self.end_date)
 
-    def can_update_price(self):
-        return self.deleted_at is None and self.is_active()
-
+        return False
 
 
 class ProductSegment(BaseModelMixin):
     name          = models.CharField(max_length=64, null=False, blank=False)
     description   = models.CharField(max_length=200, null=False, blank=False)
-    # created_by    = models.ForeignKey('User', null=False, blank=False, on_delete=models.SET_NULL)
+    created_by    = models.ForeignKey('users.User', null=True, blank=False, on_delete=models.SET_NULL)
     product_count = models.IntegerField(null=True, blank=False, default=0)
     file_url      = models.CharField(max_length=200, null=True, blank=True)
-    category      = models.ForeignKey('Category', null=True, blank=True)
+    # category      = models.ForeignKey('Category', null=True, blank=True)
     segment_key   = models.CharField(max_length=200, null=False, blank=False)
-    campaign      = models.ForeignKey('Campaign', null=True, blank=True, on_delete=models.SET_NULL)
 
     @property
     def product_ids(self):
-        return redis_client().smembers(self.segment_key)
+        return [int(i) for i in RedisC().smembers(self.segment_key)]
 
     def __str__(self):
-        return f"{self.name} ({self.product_count} products) for campaign {self.campaign}"
+        return f"{self.name} ({self.product_count} products) for campaign"
 
-    def clean(self):
-        if self.category and self.course:
-            raise ValidationError("Product Segment can have either a course or a category")
+    @staticmethod
+    def generate_segment_key(segment_name):
+        return f"PRODUCTS_{segment_name}_{int(datetime.datetime.now().timestamp())}"
 
+@receiver(post_save, sender=ProductSegment)
+def product_segment_post_save(sender, instance, **kwargs):
+    if not instance._product_ids:
+        return
 
+    RedisC().sadd(instance.segment_key, *set(instance._product_ids))
 
 class UserSegment(BaseModelMixin):
-
     name         = models.CharField(max_length=64, null=False, blank=False)
     description  = models.CharField(max_length=200, null=False, blank=False)
-    # created_by   = models.ForeignKey('User', null=False, blank=False, on_delete=models.SET_NULL)
+    created_by   = models.ForeignKey('users.User', null=True, blank=False, on_delete=models.SET_NULL)
     user_count   = models.IntegerField(null=True, blank=False, default=0)
     file_url     = models.CharField(max_length=200, null=True, blank=True)
     segment_key  = models.CharField(max_length=200, null=False, blank=False)
-    campaign     = models.ForeignKey('Campaign', null=True, blank=True, on_delete=models.SET_NULL)
 
     @property
     def user_ids(self):
-        return redis_client().smembers(self.segment_key)
+        return [int(i) for i in RedisC().smembers(self.segment_key)]
 
     def __str__(self):
-        return f"{self.name} ({self.user_count} users) for campaign {self.campaign}"
+        return f"{self.name} ({self.user_count} users) for campaign"
+
+    @staticmethod
+    def generate_segment_key(segment_name):
+        return f"USERS_{segment_name}_{int(datetime.datetime.now().timestamp())}"
+
+
+@receiver(post_save, sender=UserSegment)
+def user_segment_post_save(sender, instance, **kwargs):
+    if not instance._user_ids:
+        return
+
+    RedisC().sadd(instance.segment_key, *set(instance._user_ids))

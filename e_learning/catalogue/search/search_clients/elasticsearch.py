@@ -121,7 +121,7 @@ class ESClient(BaseSearchClient):
                              error=response.status_code,
                              error_text=response.text,
                              index=index)
-                raise Exception(f"Failed to search in index :: {str(index)} - {error_text}")
+                raise Exception(f"Failed to search in index :: {str(index)} - {response.text}")
 
             return [self.format_response(hit) for hit in response.json()['hits']['hits']]
 
@@ -134,7 +134,6 @@ class ESClient(BaseSearchClient):
 
     def update_document(self, index, doc_id, doc):
         try:
-            # doc['updated_at'] = pytz.utc.localize(datetime.utcnow()).isoformat() TODO
             response = requests.post(
                 f"{self.URL}/{index}/_update/{doc_id}",
                 data=json.dumps({"doc": doc, "doc_as_upsert": True}),

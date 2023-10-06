@@ -59,7 +59,7 @@ SEARCH_DOCUMENT_SCHEMA = {
 
 
 def generate_searchable_document(course):
-    from catalogue.models import Course, Category
+    from catalogue.models import Course
     from catalogue.service import get_registrations, get_teacher
     from catalogue.search.search_clients import get_search_client
     from jsonschema import validate, SchemaError
@@ -76,8 +76,8 @@ def generate_searchable_document(course):
             "category"          : course.category.display_text,
             "seats_available"   : course.max_seats - get_registrations(course.id),
             "teacher": {
-                "full_name"     : teacher["name"],
-                "courses_taken" : 12 ##TODO remove hard code
+                "full_name"     : teacher.full_name(),
+                "courses_taken" : len(Course.all_courses_of_teacher(teacher.id))
             },
             "schedule": {
                 "start_date"    : course._start_date("%d-%m-%Y"),
