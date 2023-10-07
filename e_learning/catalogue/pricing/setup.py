@@ -46,9 +46,3 @@ user_segment.save()
 product_segment              = ProductSegment(**product_segment_json)
 product_segment._product_ids = [int(p["product_id"]) for p in products.data()]
 product_segment.save()
-
-
-# ingest_campaign_prices(campaign)
-
-
-
