@@ -54,10 +54,11 @@ def ingest_campaign_prices(campaign):
 
 
 def get_product_price(user_id, product_id):
-    ## Check master list
-    # RedisC().get("")
-    ## Fallback to DB default price
-    pass
+    campaign_price = RedisC().get(f"PRICE:{product_id}:{user_id}")
+    if not campaign_price:
+        return 100
+
+    return campaign_price
 
 def get_product_price_bulk(user_id, product_ids):
     pass
@@ -67,34 +68,6 @@ def update_price(product_id):
 
 def create_campaign():
     pass
-
-def update_master_price(campaign_id, csv_file_path: str):
-    campaign = Campaign.objects.filter(id=campaign_id).filter(deleted_at=None).first()
-    products = None
-    users    = None
-    csv_data = CSV(csv_file_path).data()
-
-
-    if not campaign:
-        raise Exception(f"Invalid campaign ID or not found :: {campaign_id}")
-
-    ## validate all products
-    
-
-    if campaign.type == CampaignType.COUPON:
-        ## Get coupon and calculate price of each good
-        ## update master list
-
-        pass
-
-    if campaign.type == CampaignType.DIRECT_DISCOUNT:
-        pass
-
-    if campaign.can_update_price():
-        ## write to cache
-        pass
-
-
 
 ## Segments to ids (product & user) mapping
 def ingest_user_segment(segment_name: str, user_ids: list):

@@ -34,6 +34,8 @@ campaign_json = {
 	"created_by"  : Hub.get_user(1),
 	"type"        : CampaignType.DIRECT
 }
+print("\n📍CREATING A CAMPAIGN WITH 2 PRODUCTS(courses) AND 5 USERS \n")
+time.sleep(2)
 
 campaign = Campaign.objects.create(**campaign_json)
 
