@@ -19,7 +19,6 @@ class SearchRequest(serializers.Serializer):
     offset = serializers.IntegerField()
 
 
-
 def health(request):
     rebuild_search_index.delay()
     return HttpResponse("You know, for search (init full reindex...)")

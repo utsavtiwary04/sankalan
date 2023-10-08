@@ -21,7 +21,7 @@ import time
 import django
 django.setup()
 from catalogue.tests.fake_data import create_dummy_categories_courses
-from catalogue.search.models import Campaign, ProductSegment, UserSegment
+from catalogue.pricing.models import Campaign, ProductSegment, UserSegment
 from catalogue.search.tasks import rebuild_search_index
 from users.tests.fake_data import create_dummy_users
 
