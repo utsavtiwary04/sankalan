@@ -79,6 +79,27 @@ class ESClient(BaseSearchClient):
                          index=str(index))
             raise Exception(f"Failed to delete index :: {str(index)}")
 
+    def delete_all_documents(self, index):
+        try:
+            response = requests.post(
+                f"{self.URL}/{index}/_delete_by_query",
+                data=json.dumps({"query": {"match_all":{}}}),
+                headers={"Content-Type": "application/json"},
+                auth=HTTPBasicAuth(self.username, self.password)
+            )
+
+            if response.status_code > 201:
+                logger.error(f"Failed to delete all documents",
+                             error=response.status_code,
+                             index=index)
+                raise Exception(f"Failed to delete all documents :: {str(index)}")
+
+        except Exception as e:
+            logger.error(f"Failed to delete all documents",
+                         error=str(e),
+                         index=str(index))
+            raise Exception(f"Failed to delete delete all documents :: {str(index)}")
+
     def create_document(self, index, doc):
         try:
             response = requests.post(
@@ -196,8 +217,14 @@ class ESClient(BaseSearchClient):
                     "bool" : {
                         "must" : [
                             {
-                                "match": {
-                                    "heading": query_params["keyword"]
+                                # "match": {
+                                #     "heading": query_params["keyword"]
+                                # },
+                                "multi_match": {
+                                    "query": query_params["keyword"],
+                                    "type": "best_fields",
+                                    "tie_breaker": 0.3,
+                                    "fields": ["heading^5", "description"]
                                 }
                             }
                         ]

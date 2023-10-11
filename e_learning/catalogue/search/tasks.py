@@ -7,7 +7,7 @@ from celery import shared_task
 def rebuild_search_index():
     courses       = Course.all()
     search_client = get_search_client("ES")
-    search_client.delete_index("elearning-search")
+    search_client.delete_all_documents("elearning-search")
 
     for course in courses:
         document = generate_searchable_document(course)
