@@ -10,11 +10,30 @@
 - The courses can be searched by students
 
 
-Let's begin our journey by building a search & discovery system - starting from the most fundamental features that we need to more complex requirements that could come in.
+Let's begin our journey by building a **search & discovery system** - starting from the most fundamental features that we need, to more complex requirements that could come in.
 
 
+### Requirements
 
-* 1. Filtering, Sorting, Pagination
+1. Ability to handle the following queries quickly and reliably:
+	- **Free text search** 
+	*Find me a course in "handicraft" *
+	- **Free text search + filters** 
+	*Find me a course in "baking" under INR 599 in October *
+	- **Free text search + filters + sorting**
+	*Find me a course in "baking" in October in decreasing order of price *
+	- **Free text search + filters + sorting + pagination**
+	*Find me 10 courses in "baking" under 500 in increasing order of total registrations so far*
+	- **Image Search**
+	- **Semantic Search**
+	- **Search in video**
+
+2. Keep updating the searchable catalogue with the latest information about the product - courses in this case (updating sold out inventory, price, correction in description, new course launched by a teacher etc)
+
+
+### Versions of Search
+
+<b><u>V1: Filtering, Sorting, Pagination</u></b>
 
 Update mappings : {
 	"properties": {
@@ -29,12 +48,12 @@ Update mappings : {
 	}
 }
 
-* 2. ++ Keyword exact-match
+<b><u>++ V2: Search by keyword (exact match)</u></b>
 
 This works well when your corpus (set of documents to be searched) require an exact match. Example : Searching for electronic parts with exact labels, medicines with specific scientific names
 
 
-* 3. ++ Dynamic filters
+<b><u>++ V3: Dynamic Search & Sort Filters</u></b>
 
 Situation : Let's say your catalogue has over 10k or 15k of products. When a user searches for something, the search results are narrowed down to a subset of 700 products. The filters that you wish to show for your search query should be calculated in this subset (and not the entire catalogue !)
 
@@ -55,8 +74,9 @@ Can we do this in memory ? Sure, but we will have to fetch the entire result set
       }
 
 
+</br>
 
-* 4. ++ Keyword partial match, Multi field matches and scoring 
+<b><u> ++ V4: Keyword partial match, Multi field matches and scoring </u></b>
 
 This is where we have to deep dive a little bit into text analysis.	
 Analyzer = character filters + tokenizers + token filters
@@ -123,6 +143,23 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-
 
 
 
+<b><u> ++ V5: Semantic Search </u></b>
+
+We can try and tackle a slightly more complex problem of semantic search. Understanding with the help of an example - 
+
+You try to search "something sweet to eat" and the results that show up are "cake", "cookies", "sweet jaggery". Had semantic search not been enabled, you wouldn't have found "cake" or "cookie"
+
+<b><u> ++ V5: Image Search </u></b>
+
+<b><u> ++ V5: Video Search </u></b>
+
+Taking example of online courses,too often what the description doesn't capture could be stored in the video of a course. 
+
+How is that possible ?
+A description for an online course on "Weekend Baking : 5 recipes" mentions 5 specific recipes. The teacher in the class ends up teaching two other bonus recipes which were never mentioned in the description. We could analyze the transcript of what was "spoken during the course by the teacher" as well as analyze the video to extract more information as to what exactly was taught.
 
 
-* ++ Semantic search
+Adding this information to the course document in the search database should make our search resultsmore relevant for the user.
+
+A simple algorithm could be take a snapshot every 1, 2 or 3 seconds and extract objects from each set.
+Post that... WIP
