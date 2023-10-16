@@ -39,4 +39,15 @@ Each message sent out costs you money and more importantly your user's attention
 
 #### System components and layout
 
+https://whimsical.com/customer-engagement-platform-W813ErN6RPVBwt2aRDcrEY
 
+
+#### Capacity and workload estimation
+
+Users : 1mn
+Campaigns in a month : 20
+Segment Size : ~25k (5k - 100k)
+Cycles in a Campaign : 3 (1-7)
+
+
+Messages Sent : 
