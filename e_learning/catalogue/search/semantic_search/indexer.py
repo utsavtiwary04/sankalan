@@ -1,13 +1,14 @@
-## Dump to es
 from requests.auth import HTTPBasicAuth
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
+import cohere
 import json
+import time
 
-CSV_FILE_NAME  = '/Users/utsavtiwary/Downloads/course_catalog_embedded.csv'
+CSV_FILE_NAME  = '/Users/utsavtiwary/Downloads/course_catalog_embedded_small.csv'
 COHERE_KEY     = "MQoohnbLFGgS8ZhjFXJyyO15QSeLobPcQHuRtsCc"
 ES_URL         = "http://localhost:9200"
 ES_USERNAME    = "elastic"
@@ -17,7 +18,7 @@ N_CLUSTERS     = 10
 EMBEDDING_SIZE = 1024
 INDEX_PARAMS   = {
     "mappings": {
-        "_source": {"enabled": "true"},
+        "_source": {"enabled": True },
         "properties": {
             "year":    {"type": "integer"},
             "term":    {"type": "keyword"},
@@ -25,10 +26,19 @@ INDEX_PARAMS   = {
             "number":  {"type": "integer"},
             "name":    {"type": "text", "analyzer": "standard"},
             "description": {"type": "text", "analyzer": "standard"},
-            "embedding":   {"type": "dense_vector", "dims": EMBEDDING_SIZE }
+            "embedding":   {
+                "type": "dense_vector",
+                "dims": EMBEDDING_SIZE,
+                "index": True,
+                "similarity": "cosine"
+            }
         }
     }
 }
+def prompt(msg, wait=2):
+    print(msg)
+    print("\n")
+    time.sleep(wait)
 
 def visualize_vectors(course_catalog: pd.DataFrame, clusters=N_CLUSTERS):
     vectors = []
@@ -48,20 +58,6 @@ def visualize_vectors(course_catalog: pd.DataFrame, clusters=N_CLUSTERS):
     #     plt.annotate(label, pd.DataFrame(reduced_vectors).iloc[i, :])
     plt.show()
 
-course_catalog = pd.read_csv(CSV_FILE_NAME)
-doc_list       = []
-for doc in course_catalog.itertuples():
-    doc_list.append({
-        "year":        doc.Year,
-        "term":        doc.Term ,
-        "subject":     doc.Subject,
-        "number":      doc.Number,
-        "name":        doc.Name,
-        "description": doc.Description or "",
-        "embedding":   [float(i) for i in doc.course_name_vectors.replace("[", "").replace("]", "").split(",")]
-    })
-
-## INDEX DOCS ##
 def create_index(index_params=INDEX_PARAMS):
     try:
         response = requests.put(
@@ -72,7 +68,7 @@ def create_index(index_params=INDEX_PARAMS):
         )
 
         if response.status_code > 201:
-            raise Exception(f"Failed to create index {str(INDEX)} :: {response.status_code}")
+            print(f"Failed to create index {str(INDEX)} :: {response.status_code} :: {response.text}")
 
     except Exception as e:
         raise Exception(f"Failed to create index {str(INDEX)} :: {str(e)}")
@@ -87,7 +83,7 @@ def create_document(doc):
         )
 
         if response.status_code > 201:
-            print(f"Failed to create new document in {INDEX} :: {doc['name']} :: {response.status_code}")
+            print(f"Failed to create new document in {INDEX} :: {doc['name']} :: {response.status_code} {response.text}")
             return None
 
         return response.json()["_id"]
@@ -95,11 +91,6 @@ def create_document(doc):
     except Exception as e:
         raise Exception(f"Failed to create new document in {INDEX} :: {doc['name']} :: {str(e)}")
 
-create_index()
-for doc in doc_list:
-    create_document(doc) 
-
-## SEARCH ##
 def search_document(search_text):
 
     def generate_cohere_embeddings(text):
@@ -113,44 +104,75 @@ def search_document(search_text):
         response     = requests.post(
             f"{ES_URL}/{INDEX}/_search/",
             data=json.dumps({
-                "size": 10,
-                "query": {
-                    "script_score": {
-                        "query": {"match_all": {}},
-                        "script": {
-                            "source": "cosineSimilarity(params.query_vector, doc['title_vector']) + 1.0",
-                            "params": {"query_vector": query_vector}
-                        }
-                    }
-                },
-                "_source": {"includes": ["Name", "Description"]}
+              "knn": {
+                "field": "embedding",
+                "query_vector": query_vector,
+                "k": 10,
+                "num_candidates": 100
+              },
+              "fields": [ "name", "description" ]
             }),
             headers={"Content-Type": "application/json"},
             auth=HTTPBasicAuth(ES_USERNAME, ES_PASSWORD)
         )
 
         if response.status_code > 201:
-            print(f"Failed to search document in {INDEX} :: {search_text} :: {response.status_code}")
+            print(f"Failed to search document in {INDEX} :: {search_text} :: {response.status_code} :: {response.text}")
             return None
 
-        return response.json()["_id"]
+        return [doc["_source"] for doc in response.json()['hits']['hits']]
 
     except Exception as e:
         raise Exception(f"Failed to search document in {INDEX} :: {search_text} :: {str(e)}")
 
 
+######
+prompt(f"Loading file with embeddings ...")
+######
+course_catalog = pd.read_csv(CSV_FILE_NAME)
+doc_list       = []
+for doc in course_catalog.itertuples():
+    doc_list.append({
+        "year":        doc.Year,
+        "term":        doc.Term ,
+        "subject":     doc.Subject,
+        "number":      doc.Number,
+        "name":        doc.Name,
+        "description": doc.Description or "",
+        "embedding":   [float(i) for i in doc.course_name_vectors.replace("[", "").replace("]", "").split(",")]
+    })
 
-requests.post
-{
-    "size": 10,
-    "query": {
-        "script_score": {
-            "query": {"match_all": {}},
-            "script": {
-                "source": "cosineSimilarity(params.query_vector, doc['title_vector']) + 1.0",
-                "params": {"query_vector": query_vector}
-            }
-        }
-    },
-    "_source": {"includes": ["Name", "Description"]}
-}
+######
+prompt(f"Creating ES Index and indexing docs ...")
+######
+create_index()
+for doc in doc_list:
+    if create_document(doc) is None:
+        print("ERROR STOP")
+        exit(0)
+
+######
+prompt(f"Viasualizing models ...")
+######
+visualize_vectors(course_catalog)
+
+######
+prompt(f"Search ...")
+######
+visualize_vectors(course_catalog)
+
+
+# requests.post
+# {
+#     "size": 10,
+#     "query": {
+#         "script_score": {
+#             "query": {"match_all": {}},
+#             "script": {
+#                 "source": "cosineSimilarity(params.query_vector, doc['title_vector']) + 1.0",
+#                 "params": {"query_vector": query_vector}
+#             }
+#         }
+#     },
+#     "_source": {"includes": ["Name", "Description"]}
+# }

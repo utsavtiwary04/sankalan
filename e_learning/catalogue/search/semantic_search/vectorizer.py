@@ -21,7 +21,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 
 COHERE_KEY         = "MQoohnbLFGgS8ZhjFXJyyO15QSeLobPcQHuRtsCc"
-COHERE_RATE_LIMIT  = 8 #seconds
+COHERE_RATE_LIMIT  = 1 #seconds
 COHERE_BATCH_SIZE  = 48
 COURSE_CATALOG_URL = "https://waf.cs.illinois.edu/discovery/course-catalog.csv"
 CSV_FILE_NAME      = '/Users/utsavtiwary/Downloads/course_catalog_embedded.csv'
@@ -32,11 +32,15 @@ def prompt(msg, wait=2):
 	time.sleep(wait)
 
 def generate_cohere_embeddings(batch):
-	time.sleep(COHERE_RATE_LIMIT)
-	co = cohere.Client(COHERE_KEY)
-	batch_embeddings = co.embed(batch, 'embed-english-light-v2.0') ## Dim : COHERE_BATCH_SIZE x 1024
+	try:
+		time.sleep(COHERE_RATE_LIMIT)
+		co = cohere.Client(COHERE_KEY)
+		batch_embeddings = co.embed(batch, 'embed-english-light-v2.0') ## Dim : COHERE_BATCH_SIZE x 1024
+		return batch_embeddings.embeddings
 
-	return batch_embeddings.embeddings
+	except Exception as e:
+		print("Failed to generate embeddings :: {e}")
+		return None
 
 ######
 prompt(f"Loading model ...")
@@ -54,20 +58,22 @@ prompt(f"Generating embeddings ...")
 ######
 
 batches = []
-batch   = []
 vectors = []
 
 for row in course_catalog.itertuples():
-	batch.append(row.Name)
+	batches.append(row.Description)
 
-	if len(batch) == COHERE_BATCH_SIZE:
-		vectors.extend([e for e in generate_cohere_embeddings(batch)])
-		batch = []
+batches = [batches[i:i+COHERE_BATCH_SIZE] for i in range(len(batches))[::COHERE_BATCH_SIZE]]
+
+for batch in batches:
+	embeddings = generate_cohere_embeddings(batch)
+	if embeddings is not None:
+		vectors.extend(embeddings)
 		prompt(f"{len(vectors)} embeddings generated", 10)
 
-if len(batch) > 0:
-	vectors.extend([e for e in generate_cohere_embeddings(batch)])
-	prompt(f"{len(vectors)} embeddings generated", 10)
+# if len(batch) > 0:
+# 	vectors.extend([e for e in generate_cohere_embeddings(batch)])
+# 	prompt(f"{len(vectors)} embeddings generated", 10)
 
 ######
 prompt(f"{len(vectors)} embeddings generated !")
@@ -85,7 +91,7 @@ prompt(f"Dumping to CSV file ..")
 ######
 
 # course_catalog['course_name_vectors'] = reduced_vectors
-course_catalog['course_name_vectors'] = vectors
+course_catalog['course_description_vectors'] = vectors
 course_catalog.to_csv(f'/Users/utsavtiwary/Downloads/course_catalog_embedded_{int(time.time())}.csv')
 
 ######
