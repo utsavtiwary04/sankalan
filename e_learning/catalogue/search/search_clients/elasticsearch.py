@@ -53,8 +53,7 @@ class ESClient(BaseSearchClient):
                 logger.error(f"Failed to create index",
                              error=response.status_code,
                              index=index)
-                raise Exception(f"Failed to create index :: {str(index)}")
-
+                raise Exception(f"Failed to create index :: {str(index)} :: {response.status_code}")
         except Exception as e:
             logger.error(f"Failed to create index", error=str(e), index=str(index))
             raise Exception(f"Failed to create index :: {str(index)}")
