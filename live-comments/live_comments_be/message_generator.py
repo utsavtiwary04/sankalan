@@ -7,9 +7,3 @@ def generate_message(word_length=4)
 def send_messages(url, rate=100):
 	messages = [generate_message() for i in range(rate)]
 	map(messages, lambda x: requests.post(url, data=x))
-
-
-
-import redis
-r = redis.Redis(host='localhost', port=6379, decode_responses=True)
-pp r.pubsub()
