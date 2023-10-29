@@ -9,7 +9,7 @@ class Listener(threading.Thread):
         self.pubsub.subscribe(channels)
     
     def work(self, item):
-        ## listen to DB changes and push to DB
+        ## listen to DB changes and push to socket
         print(item['channel'], ":", item['data'])
 
     
