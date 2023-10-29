@@ -1,15 +1,20 @@
-from .models import User, Comment
-from .tasks import test_task
+from .tasks import save_comment
+from django_redis import get_redis_connection
+
 
 def new_comment(data: dict):
-	# test_task.delay()
-	# user = User.active_user(data["user_id"])
-	return data.values()
 
+
+	# import ipdb; ipdb.settrace()
+
+	save_comment.delay(data)
+
+	return data.values()
 
 
 def get_channel_comments(channel, start_ts, end_ts):
 	pass
+
 
 def get_user_comments(user_id, start_ts, end_ts):
 	pass

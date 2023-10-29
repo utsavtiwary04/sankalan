@@ -37,12 +37,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
     "live_comments"
 ]
+
+CORS_ORIGIN_WHITELIST = (
+'http://localhost:3000',
+'http://localhost:3001',
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -123,9 +131,20 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Celery Configuration Options
+# Celery config
 CELERY_BROKER_URL           = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND       = "redis://127.0.0.1:6379/0"
 CELERY_TIMEZONE             = "Asia/Kolkata"
 CELERY_TASK_TRACK_STARTED   = True
 CELERY_TASK_TIME_LIMIT      = 30 * 60
+
+# Cache config
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        }
+    }
+}
