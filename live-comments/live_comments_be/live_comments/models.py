@@ -41,7 +41,7 @@ class Channel(BaseModelMixin):
 
 class Comment(BaseModelMixin):
     text      = models.CharField(max_length=300, null=False, blank=False)
-    user_ts   = models.IntegerField(null=False, blank=False)
+    user_ts   = models.BigIntegerField(null=False, blank=False)
     channel   = models.ForeignKey('Channel', on_delete=models.SET_NULL, null=True, blank=False)
     user      = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, blank=False)
 

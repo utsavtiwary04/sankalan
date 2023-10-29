@@ -1,8 +1,10 @@
+import socketio
+from datetime import datetime
+from celery import shared_task
+from celery.signals import task_failure
+
 from .models import User, Comment, Channel
 from .exceptions import EntityNotFound
-from celery import shared_task, Task
-from celery.signals import task_failure
-from celery.contrib import rdb
 
 @shared_task(name="live_comments.save_comment",
             autoretry_for=(Exception,),
@@ -17,9 +19,24 @@ def save_comment(data: dict):
     if not channel:
         raise EntityNotFound(data["channel_id"], Channel.__name__)
 
+    new_comment = Comment(user=user,
+                          channel=channel,
+                          text=data["comment"],
+                          user_ts=data["user_ts"])
+    new_comment.save()
+    publisher(f"{user.name} said '{new_comment.text}'")
+
 
 @task_failure.connect(sender=save_comment)
 def task_failure_notifier(sender=None, **kwargs):
     print("From task_failure_notifier ==> Task failed ")
     print(kwargs)
     # rdb.set_trace()
+
+
+def publisher(message):
+    sio = socketio.SimpleClient()
+    sio.connect('http://localhost:8001')
+
+    ## Read the most recent messages from the DB
+    sio.emit('message', message)

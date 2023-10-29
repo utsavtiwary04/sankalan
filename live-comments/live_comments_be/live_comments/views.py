@@ -12,6 +12,7 @@ class NewComment(serializers.Serializer):
     user_id    = serializers.IntegerField()
     channel_id = serializers.IntegerField()
     comment    = serializers.CharField(max_length=50)
+    user_ts    = serializers.IntegerField()
 
 def health(request):
     return HttpResponse("Health Check :: Live Comments")
