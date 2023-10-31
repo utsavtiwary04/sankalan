@@ -1,29 +1,47 @@
 'use client'
-import { socket } from './socket';
+import { socket } from './client_socket';
+import Hero from './hero';
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import axios from 'axios';
 
-const BE_SERVER = "http://localhost:3000"
+const BE_SERVER = "http://localhost:8000"
+const CHANNELS = [
+  {
+    id: 1,
+    name: "cooking",
+    messages: ["hello", "world"]
+  },
+  {
+    id: 2,
+    name: "dancing",
+    messages: ["lorem", "ipsum"]
+  }
+]
+
 const Message = () => {
-    const [messages, setMessages] = useState(["-- start --"]);
+    const [channels, setChannel] = useState(CHANNELS);
+    const [currentMessage, setCurrentMessage] = useState("")
+    const [currentChannel, setCurrentChannel] = useState("dancing_2")
 
     useEffect(() => {
-      console.log(`URL trying to connect to : ${process.env.SOCKET_SERVER_URL}`)
       socket.connect()
-
-      socket.on('message', receiveMessage);
-
+      socket.on("connect", onConnect)
+      socket.on('message_channel_', receiveMessage);
       return () => {
         socket.disconnect();
       };
     }, []);
 
     const sendMessage = () => {
-        axios.post(BE_SERVER, {
-          // Add parameters here
+        axios.post(`${BE_SERVER}/live-comments/comment`, {
+            "channel_id" : 1,
+            "comment": currentMessage,
+            "user_id": "1", //hardcoded as of now
+            "user_ts": (new Date()).getTime(),
         })
         .then((response) => {
-          console.log(response.data);
+          setCurrentMessage("")
         })
         .catch((error) => {
           console.log(error);
@@ -31,26 +49,21 @@ const Message = () => {
     };
 
     const receiveMessage = (message) => {
+      console.log("RECEIVED", message)
+
       setMessages((prevMessages) => [...prevMessages, message]);
     };
+    const onConnect = () => { console.log("CONNECTED TO SERVER ⚡️🔌")}
 
     return (
-        <div>
-            <div>
-                <u> HERE ARE THE MESSAGES👇🏻</u>
-            </div>
-            <br></br>
-            {messages.map((message, index) => (
-                <p key={index}>{message}</p>
-            ))}
-
-           {/* <input
-                type="text"
-                value={currentMessage}
-                onChange={(e) => setCurrentMessage(e.target.value)}
-            />
-            <button onClick={sendMessage}>Send</button>*/}
-        </div>
+        // <div>
+      <Hero
+        channels={channels}
+        currentMessage={currentMessage}
+        setCurrentMessage={setCurrentMessage}
+        setCurrentChannel={setCurrentChannel}
+        sendMessage={sendMessage}
+      />
     );
 };
 

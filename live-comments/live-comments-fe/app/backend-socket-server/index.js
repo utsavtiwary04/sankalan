@@ -4,10 +4,10 @@ const cors = require("cors");
 
 const httpServer = http.createServer();
 
-// --- SETUP SERVER --- //
+// // --- SETUP SERVER --- //
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:8001", // FE CLIENTS
+    origin: process.env.FE_WHITELIST,
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -24,13 +24,18 @@ io.on("connection", (socket) => {
 
   socket.on("send_msg", (data) => {
     console.log(data, "DATA");
-    //This will send a message to a specific room ID
     socket.to(data.roomId).emit("receive_msg", data);
   });
 
   socket.on("disconnect", () => {
     console.log("A user disconnected:", socket.id);
   });
+
+  socket.on("message", data => {
+    console.log(`message received ${data.comment}`)
+    socket.broadcast.emit(`channel_${data.channel_id}`, data)
+    console.log("message sent")
+  })
 });
 
 io.engine.on("connection_error", (err) => {
@@ -40,7 +45,7 @@ io.engine.on("connection_error", (err) => {
   console.log(err.context);
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8001;
 httpServer.listen(PORT, () => {
   console.log(`Socket.io server is running on port ${PORT}`);
 });
