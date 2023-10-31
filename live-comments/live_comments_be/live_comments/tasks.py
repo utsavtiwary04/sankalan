@@ -1,5 +1,5 @@
 import socketio
-from datetime import datetime
+from datetime import datetime, timedelta
 from celery import shared_task
 from celery.signals import task_failure
 
@@ -14,17 +14,17 @@ def save_comment(data: dict):
     channel = Channel.active_channel_by_id(data["channel_id"])
 
     if not user:
-        raise EntityNotFound(data["user_id"], User.__name__)
+        raise EntityNotFound(User.__name__, data["user_id"])
 
     if not channel:
-        raise EntityNotFound(data["channel_id"], Channel.__name__)
+        raise EntityNotFound(Channel.__name__, data["channel_id"])
 
     new_comment = Comment(user=user,
                           channel=channel,
                           text=data["comment"],
                           user_ts=data["user_ts"])
     new_comment.save()
-    publisher(f"{user.name} said '{new_comment.text}'")
+    # publisher(f"{user.name} said '{new_comment.text}'")
 
 
 @task_failure.connect(sender=save_comment)
@@ -38,5 +38,18 @@ def publisher(message):
     sio = socketio.SimpleClient()
     sio.connect('http://localhost:8001')
 
-    ## Read the most recent messages from the DB
-    sio.emit('message', message)
+    ## Read the most recent messages from the DB in the last one minute
+    now      = int(datetime.now().timestamp())
+    channels = Channel.active_channels()
+    for channel in active_channels:
+        comments = Comment.recent_comments(count=10, start=now-60, end=now, channel_id=channel.id)
+
+        if len(comments) > 0:
+            message_payload = [
+                {
+                    "username": comment.user.name,
+                    "comment": comment.text,
+                    "time": comment.user_ts
+                } for comment in comments
+            ]
+            sio.emit('message', { "messages" : message_payload})
