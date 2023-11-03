@@ -7,7 +7,7 @@ const httpServer = http.createServer();
 // // --- SETUP SERVER --- //
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FE_WHITELIST,
+    origin: process.env.FE_WHITELIST || "http://localhost:3000",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -31,9 +31,9 @@ io.on("connection", (socket) => {
     console.log("A user disconnected:", socket.id);
   });
 
-  socket.on("message", data => {
-    console.log(`message received ${data.comment}`)
-    socket.broadcast.emit(`channel_${data.channel_id}`, data)
+  socket.on("message", ({ messages, channel_id, channel_name }) => {
+    console.log(`${messages.length} messages received on channel ${channel_name}(CHANNEL ID: ${channel_id})`)
+    socket.broadcast.emit(`message_channel_${channel_id}`, messages)
     console.log("message sent")
   })
 });

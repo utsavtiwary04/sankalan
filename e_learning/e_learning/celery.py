@@ -16,6 +16,7 @@ app = Celery('e_learning')
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
 # Your project - you decide the name !
+# python -m celery -A e_learning worker --loglevel=info --concurrency=2
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 

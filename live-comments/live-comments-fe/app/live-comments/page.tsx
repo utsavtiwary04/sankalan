@@ -1,5 +1,6 @@
 'use client'
 import { socket } from './client_socket';
+import { get, post } from './api_requests';
 import Hero from './hero';
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
@@ -18,47 +19,58 @@ const CHANNELS = [
     messages: ["lorem", "ipsum"]
   }
 ]
-
+const URLS = {
+  "new_message":   `${BE_SERVER}/live-comments/comments/new`,
+  "past_messages": `${BE_SERVER}/live-comments/comments/past`
+}
 const Message = () => {
-    const [channels, setChannel] = useState(CHANNELS);
     const [currentMessage, setCurrentMessage] = useState("")
-    const [currentChannel, setCurrentChannel] = useState("dancing_2")
+    const [currentChannel, setChannel]   = useState(1)
+    const [messages, setMessages] = useState([])
+
+    const setCurrentChannel = (channel_key) => {
+      setChannel(channel_key.split("_")[1])
+    };
 
     useEffect(() => {
+
+      get(URLS.new_message, { "channel_id": currentChannel })
       socket.connect()
       socket.on("connect", onConnect)
-      socket.on('message_channel_', receiveMessage);
+      socket.on('message_channel_1', receiveMessage);
       return () => {
         socket.disconnect();
       };
     }, []);
 
     const sendMessage = () => {
-        axios.post(`${BE_SERVER}/live-comments/comment`, {
-            "channel_id" : 1,
-            "comment": currentMessage,
-            "user_id": "1", //hardcoded as of now
-            "user_ts": (new Date()).getTime(),
-        })
-        .then((response) => {
-          setCurrentMessage("")
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+      const payload = {
+          "channel_id" : channel,
+          "comment": currentMessage,
+          "user_id": "1", //hardcoded
+          "user_ts": (new Date()).getTime(),
+      }
+      const onError = () => {}
+      const onSuccess = () => setCurrentMessage("")
+
+      post(URLS.new_message, payload, onSuccess, onError)
     };
 
     const receiveMessage = (message) => {
       console.log("RECEIVED", message)
+      const channel = 
+      const channel_id = message.channel_id;
 
-      setMessages((prevMessages) => [...prevMessages, message]);
+
+      // setMessages((prevMessages) => [...prevMessages, message]);
     };
     const onConnect = () => { console.log("CONNECTED TO SERVER ⚡️🔌")}
 
     return (
         // <div>
       <Hero
-        channels={channels}
+        channels={CHANNELS}
+        currentChannel={channel}
         currentMessage={currentMessage}
         setCurrentMessage={setCurrentMessage}
         setCurrentChannel={setCurrentChannel}

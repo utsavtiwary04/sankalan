@@ -1,7 +1,7 @@
 import { useclassNamete } from 'react'
 import { BgSpots, MessageList, TabbedView } from './sundry'
 
-export default function Hero({ channels, currentMessage, setCurrentMessage, sendMessage, setCurrentChannel }) {
+export default function Hero({ channels, currentChannel, currentMessage, setCurrentMessage, sendMessage, setCurrentChannel }) {
   
   return (
     <div className="bg-white">
@@ -21,7 +21,7 @@ export default function Hero({ channels, currentMessage, setCurrentMessage, send
             <p className="mt-6 text-lg leading-8 text-gray-400">
               Select the channel to send message
             </p>
-            <TabbedView channels={channels} setCurrentChannel={setCurrentChannel} />
+            <TabbedView channels={channels} currentChannel={currentChannel} setCurrentChannel={setCurrentChannel} />
           </div>
         </div>
       </div>

@@ -39,7 +39,7 @@ export function MessageList({ messages }) {
   );
 };
 
-export function TabbedView({ channels, setCurrentChannel }) {
+export function TabbedView({ channels, currentChannel, setCurrentChannel }) {
   return (
     <div className="flex w-full flex-col">
       <Tabs 
@@ -57,7 +57,7 @@ export function TabbedView({ channels, setCurrentChannel }) {
         {
           channels.map((channel, index) =>(
           <Tab
-            key={`${channel.name}_${index}`}
+            key={`${channel.name}_${channel.id}`}
             title={
               <div className="flex items-center space-x-2">
                 <span>{channel.name}</span>

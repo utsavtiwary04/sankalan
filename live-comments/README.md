@@ -32,3 +32,8 @@ Django things:
 - startapp
 - makemigrations + migrate
 - superuser
+
+### Challenges at scale
+- identifying chokepoints
+- preventing re-sending or missing messages
+- context aware censoring

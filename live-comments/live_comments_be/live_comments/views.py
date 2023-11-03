@@ -1,3 +1,4 @@
+import traceback
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -31,10 +32,11 @@ def new(request, format=None):
             errors = {key :" ".join([str(e) for e in error_list]) for key, error_list in request.errors.items()}
             return Response(status=400, data={'data': request.errors, 'success': False})
 
-        return Response(status=200, data={'data': new_comment(request.data), 'success': True})
+        return Response(status=201, data={'data': new_comment(request.data), 'success': True})
 
     except Exception as e:
-        return Response(status=500, data={'data': str(e), 'success': False})
+        traceback.print_exception(e)
+        return Response(status=500, data={'data': "Something broke. Our fault - not yours :(", 'success': False})
 
 @api_view(['GET'])
 @parser_classes([JSONParser])
@@ -57,5 +59,6 @@ def past(request, format=None):
     except EntityNotFound as e:
         return Response(status=400, data={'data': str(e), 'success': False})
 
-    except GenericAPIException as e:
+    except Exception as e:
+        traceback.print_exception(e)
         return Response(status=500, data={'data': "Something broke. Our fault - not yours :(", 'success': False})
