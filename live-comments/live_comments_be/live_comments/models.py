@@ -36,6 +36,16 @@ class Channel(BaseModelMixin):
         verbose_name        = "channels"
         verbose_name_plural = "channels"
 
+    def __str__(self):
+        return f"{self.name} (ID: {channel.id})"
+
+    def to_json(self):
+        return {
+            "id"        : self.id,
+            "name"      : self.name,
+            "created_at": int(self.created_at.timestamp()),
+        }
+
     @staticmethod
     def active_channel(*args, **kwargs):
         base_query = kwargs.get("base_query")
@@ -68,6 +78,9 @@ class Comment(BaseModelMixin):
     class Meta:
         verbose_name        = "comments"
         verbose_name_plural = "comments"
+
+    def __str__(self):
+        return f"{self.id} {self.text} (By user {self.user.name} on channel {self.channel.name})"
 
     def to_json(self):
         return {
@@ -119,5 +132,49 @@ class Comment(BaseModelMixin):
 
         return base_query.order_by('-created_at')[:kwargs.get("count", 10)]
 
+
+class UserViolationType(models.TextChoices):
+    MANUAL              = 'manual'
+    RATE_LIMIT_EXCEEDED = 'accepting_registrations'
+    HATEFUL_COMMENT     = 'paused_registrations'
+
+class UserViolation(BaseModelMixin):
+
+    violation = models.CharField(
+                                    max_length  = 64,
+                                    choices     = UserViolationType.choices,
+                                    default     = UserViolationType.MANUAL,
+                                    null        = False, 
+                                    blank       = False
+                                )
+    user      = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, blank=False)
+    comment   = models.ForeignKey('Comment', on_delete=models.SET_NULL, null=True, blank=False)
+
+    class Meta:
+        verbose_name        = "user_violations"
+        verbose_name_plural = "user_violations"
+
     def __str__(self):
-        return f"{self.id} {self.text} (By user {self.user.name} on channel {self.channel.name})"
+        return f"{self.violation} - by user {self.user.name}[{self.user.id}] on comment {self.comment.id} @ {self.created_at}"
+
+    def to_json(self):
+        return {
+            "id"        : self.id,
+            "violation" : self.violation,
+            "create_at" : int(self.created_at.timestamp()),
+            "username"  : self.user.name,
+            "comment_id": self.comment.id
+        }
+    @staticmethod
+    def active_violations():
+        return UserViolation.objects.filter(deleted_at=None)
+
+    @staticmethod
+    def is_blocked(user_id):
+        MAX_VIOLATIONS = 5
+        VIOLATION_DAYS = 1
+        time_range     = int(datetime.now().timestamp()) - (24 * 60 * 60 * VIOLATION_DAYS)
+        violations     = UserViolation.active_violations().filter(user_id=user_id).filter(created_at__gte=time_range).count()
+
+        return violations > MAX_VIOLATIONS
+
