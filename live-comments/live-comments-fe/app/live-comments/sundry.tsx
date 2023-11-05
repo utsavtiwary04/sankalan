@@ -1,5 +1,23 @@
 import {Tabs, Tab, Card, CardBody, Chip} from "@nextui-org/react";
 
+function Loading({ alert }){
+  return (
+    <div className="container mx-auto py-12">{alert}</div>
+  );
+}
+
+function formatDateTime(ts) {
+  const date = new Date(ts);
+  let h = date.getHours();
+  let m = date.getMinutes();
+  var meridian = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  h = h ? h : 12;
+  m = m < 10 ? "0" + m : m;
+  var strTime = h + ":" + m + ":" + meridian;
+  return `${date.toDateString()} ${strTime}`
+}
+
 export function BgSpots(){
   return(
     <div
@@ -14,65 +32,61 @@ export function BgSpots(){
           }}
       />
     </div>
-      
   );
 };
 
-export function MessageList({ messages }) {
+export function TabbedView({ channels, comments, currentChannel, setCurrentChannel }) {
+  return (
+    <div className="flex w-full flex-col">
+      <div  className="flex items-center space-x-2">
+        {
+          !isEmpty(channels)? (channels.map((channel, index) => (
+          <div
+            key={`${channel.name}_${index}`}
+          >
+            <Card>
+              <button
+                className={`bg-blue-500 text-white font-bold py-2 px-4 border-b-4 rounded ${currentChannel == channel.id ? 'bg-red-500 border-red-700 ': 'border-blue-700'}`} 
+                title={channel.id}
+                key={channel.name}
+                onClick={e => setCurrentChannel(e.currentTarget.title)}
+              >
+                <span>{channel.name}</span>
+              </button>
+            </Card>
+          </div>))) : (<Loading alert="Loading Channels ..." />)
+        }
+      </div>
+      <div className="focus:border-gray-300">
+        <Card>
+          <CommentsList comments={comments.channel_id} channel={currentChannel} />
+        </Card>
+      </div>
+    </div>   
+  );
+}
+
+function CommentsList({ comments, channel }) {
   return (
     <div>
       {
-        messages.map((message, index) => (
-          <div className="msg-bubble" key={index}>
-            <div className="msg-info">
-              <div className="msg-info-name">Sajad</div>
-              <div className="msg-info-time">12:46</div>
-            </div>
-
-            <div className="msg-text">
-              {message}
-            </div>
-          </div>
-        ))
+        !isEmpty(comments) ? (
+          comments.map((comment, index) => (
+            <div className="msg-bubble" key={`${channel.id}_msg_${index}`}>
+              <div className="msg-info">
+                <div className="msg-info-name">{comment.username}</div>
+                <div className="msg-info-time">{formatDateTime(comment.time)}</div>
+              </div>
+              <div className="msg-text">
+                {comment.comment}
+              </div>
+            </div>)
+          )
+        ) : (<Loading alert="No comments found 🫙"/>)
       }
     </div>
   );
 };
 
-export function TabbedView({ channels, currentChannel, setCurrentChannel }) {
-  return (
-    <div className="flex w-full flex-col">
-      <Tabs 
-        aria-label="Options" 
-        color="primary" 
-        variant="underlined"
-        classNames={{
-          tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-          cursor: "w-full bg-[#22d3ee]",
-          tab: "max-w-fit px-0 h-12",
-          tabContent: "group-data-[selected=true]:text-[rgb(255, 241, 207)]"
-        }}
-        onSelectionChange={setCurrentChannel}
-      >
-        {
-          channels.map((channel, index) =>(
-          <Tab
-            key={`${channel.name}_${channel.id}`}
-            title={
-              <div className="flex items-center space-x-2">
-                <span>{channel.name}</span>
-                <Chip size="sm" variant="faded">9</Chip>
-              </div>
-            }
-          >
-            <Card>
-                <CardBody>
-                  <MessageList messages={channel.messages} />
-                </CardBody>
-            </Card>
-          </Tab>))
-      }
-      </Tabs>
-    </div>   
-  );
-}
+const isEmpty = val => (val == null || val.length == 0)
+

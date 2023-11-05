@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
 
   socket.on("message", ({ messages, channel_id, channel_name }) => {
     console.log(`${messages.length} messages received on channel ${channel_name}(CHANNEL ID: ${channel_id})`)
-    socket.broadcast.emit(`message_channel_${channel_id}`, messages)
+    socket.broadcast.emit(`message`, { messages, channel_id, channel_name })
     console.log("message sent")
   })
 });
